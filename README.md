@@ -5,6 +5,7 @@
 </p>
 <p align="center">
   <em>A cute framework for small self-hosted apps</em>
+  <em>Art by <a href="https://bissgigi.art/">@bissgigi</a></em>
 </p>
 
 [![PyPI - Version](https://img.shields.io/pypi/v/wheke.svg)](https://pypi.org/project/wheke)
