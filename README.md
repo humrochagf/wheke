@@ -5,6 +5,7 @@
 </p>
 <p align="center">
   <em>A cute framework for small self-hosted apps</em>
+  <br/>
   <em>Art by <a href="https://bissgigi.art/">@bissgigi</a></em>
 </p>
 
