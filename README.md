@@ -1,7 +1,7 @@
 # Wheke
 
 <p align="center">
-  <img src="./images/wheke.png" alt="Wheke"></a>
+  <img src="https://github.com/humrochagf/wheke/blob/main/images/wheke.png?raw=true" alt="Wheke"></a>
 </p>
 <p align="center">
   <em>A cute framework for small self-hosted apps</em>
