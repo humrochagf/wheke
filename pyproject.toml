@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "wheke"
 dynamic = ["version"]
-description = "A framework for self-hosted apps"
+description = "A cute framework for small self-hosted apps"
 readme = "README.md"
 requires-python = ">=3.7"
 license = "MIT"

@@ -11,5 +11,6 @@
 .venv/
 .vscode
 db/
+dist/
 node_modules/
 venv/
