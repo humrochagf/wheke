@@ -8,7 +8,7 @@ from passlib.context import CryptContext
 
 from wheke.auth.exceptions import AuthException
 from wheke.auth.models import Token, TokenData, User, UserInDB
-from wheke.auth.repository import TinyAuthRepository
+from wheke.auth.repository import get_repository
 from wheke.core import settings
 
 ALGORITHM = "HS256"
@@ -16,8 +16,6 @@ ALGORITHM = "HS256"
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
-
-repository = TinyAuthRepository(settings.auth_db)
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
@@ -28,8 +26,8 @@ def get_password_hash(password: str) -> str:
     return pwd_context.hash(password)
 
 
-def authenticate_user(username: str, password: str) -> UserInDB | None:
-    user = repository.get_user(username)
+async def authenticate_user(username: str, password: str) -> UserInDB | None:
+    user = await get_repository().get_user(username)
 
     if user and verify_password(password, user.hashed_password):
         return user
@@ -64,7 +62,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]) -> Use
     except JWTError as ex:
         raise AuthException from ex
 
-    user = repository.get_user(token_data.username)
+    user = await get_repository().get_user(token_data.username)
 
     if user is None:
         raise AuthException
