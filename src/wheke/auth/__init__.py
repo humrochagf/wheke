@@ -1,15 +1,12 @@
-from wheke.auth.models import Token, TokenData, User, UserInDB
-from wheke.auth.routes import router
-from wheke.auth.security import get_current_active_user
+from pathlib import Path
 
-__all__ = [
-    # models
-    "Token",
-    "TokenData",
-    "User",
-    "UserInDB",
-    # routes
-    "router",
-    # security
-    "get_current_active_user",
-]
+from wheke.auth.repository import AuthRepository, make_repository
+from wheke.auth.routes import router
+from wheke.core.pod import Pod
+
+auth_pod = Pod(
+    "auth",
+    Path(__file__).parent,
+    router=router,
+    repositories=[(AuthRepository, make_repository)],
+)

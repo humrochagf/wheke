@@ -3,7 +3,7 @@
 *.env
 *.py[oc]
 .DS_Store
-.coverage
+.coverage*
 .env
 .hatch/
 .mypy_cache/

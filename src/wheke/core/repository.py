@@ -1,4 +1,5 @@
 from abc import ABC
+from typing import Callable
 
 from wheke.core.exceptions import RepositoryNotSetException
 
@@ -8,13 +9,15 @@ class Repository(ABC):
 
 
 class RepositoryRegistry:
-    _registry: dict[type[Repository], Repository] = {}
+    _registry: dict[type[Repository], Callable[[], Repository]] = {}
 
     @classmethod
     def register(
-        cls, repository_type: type[Repository], repository: Repository
+        cls,
+        repository_type: type[Repository],
+        repository_factory: Callable[[], Repository],
     ) -> None:
-        cls._registry[repository_type] = repository
+        cls._registry[repository_type] = repository_factory
 
     @classmethod
     def get(cls, repository_type: type[Repository]) -> Repository:
@@ -23,4 +26,4 @@ class RepositoryRegistry:
         if not repository:
             raise RepositoryNotSetException
 
-        return repository
+        return repository()

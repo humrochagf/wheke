@@ -5,6 +5,11 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     project_name: str = "Wheke"
 
+    pods: list[str] = [
+        "wheke.auth.auth_pod",
+        "wheke.frontend.frontend_pod",
+    ]
+
     # auth
     auth_db: str = "db/auth.json"
     secret_key: SecretStr = SecretStr("change_me")

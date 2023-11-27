@@ -1,5 +1,7 @@
-from wheke.app import app
+from wheke.core.pod import Pod
+from wheke.core.wheke import Wheke
 
 __all__ = [
-    "app",
+    "Pod",
+    "Wheke",
 ]

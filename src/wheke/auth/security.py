@@ -9,7 +9,7 @@ from passlib.context import CryptContext
 from wheke.auth.exceptions import AuthException
 from wheke.auth.models import Token, TokenData, User, UserInDB
 from wheke.auth.repository import get_repository
-from wheke.core import settings
+from wheke.core.settings import settings
 
 ALGORITHM = "HS256"
 
