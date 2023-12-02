@@ -1,6 +1,7 @@
 import asyncio
 
 import typer
+from pydantic import ValidationError
 from rich.console import Console
 from rich.prompt import Prompt
 
@@ -27,11 +28,18 @@ def createuser() -> None:
 
     email = Prompt.ask("Enter the email for the user")
 
-    user = User(
-        username=username,
-        full_name=full_name,
-        email=email,
-    )
+    try:
+        user = User(
+            username=username,
+            full_name=full_name,
+            email=email,
+        )
+    except ValidationError as e:
+        for error in e.errors():
+            console.print(f"[red]Error[/] found at fields: {error['loc']}")
+            console.print(error["msg"])
+
+        raise typer.Abort()
 
     password = Prompt.ask("Enter a password for the user", password=True)
 

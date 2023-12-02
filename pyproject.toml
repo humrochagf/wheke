@@ -25,6 +25,7 @@ classifiers = [
 ]
 dependencies = [
   "aiotinydb",
+  "email-validator",
   "fastapi",
   "jinja2",
   "passlib[bcrypt]",
