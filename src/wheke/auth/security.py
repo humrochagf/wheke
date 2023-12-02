@@ -1,68 +1,21 @@
-from datetime import datetime, timedelta, timezone
-from typing import Annotated
+from typing import Annotated, cast
 
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
-from jose import JWTError, jwt
-from passlib.context import CryptContext
 
 from wheke.auth.exceptions import AuthException
-from wheke.auth.models import Token, TokenData, User, UserInDB
-from wheke.auth.repository import get_repository
-from wheke.core.settings import settings
-
-ALGORITHM = "HS256"
-
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+from wheke.auth.models import User, UserInDB
+from wheke.auth.service import AuthService, get_auth_service
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
 
 
-def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(plain_password, hashed_password)
-
-
-def get_password_hash(password: str) -> str:
-    return pwd_context.hash(password)
-
-
-async def authenticate_user(username: str, password: str) -> UserInDB | None:
-    user = await get_repository().get_user(username)
-
-    if user and verify_password(password, user.hashed_password):
-        return user
-
-    return None
-
-
-def create_access_token(data: dict) -> Token:
-    to_encode = data.copy()
-    expiration = datetime.now(tz=timezone.utc) + timedelta(
-        minutes=settings.access_token_expire_minutes
-    )
-    to_encode.update({"exp": expiration})
-    encoded_jwt = jwt.encode(
-        to_encode, settings.secret_key.get_secret_value(), algorithm=ALGORITHM
-    )
-
-    return Token(access_token=encoded_jwt, token_type="bearer")
-
-
-async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]) -> UserInDB:
-    try:
-        payload = jwt.decode(
-            token, settings.secret_key.get_secret_value(), algorithms=[ALGORITHM]
-        )
-        username: str | None = payload.get("sub")
-
-        if username is None:
-            raise AuthException
-
-        token_data = TokenData(username=username)
-    except JWTError as ex:
-        raise AuthException from ex
-
-    user = await get_repository().get_user(token_data.username)
+async def get_current_user(
+    token: Annotated[str, Depends(oauth2_scheme)],
+    service: Annotated[AuthService, Depends(get_auth_service)],
+) -> UserInDB:
+    token_data = service.decode_access_token_data(token)
+    user = await service.get_user(token_data.username)
 
     if user is None:
         raise AuthException
@@ -77,8 +30,3 @@ async def get_current_active_user(
         raise HTTPException(status_code=400, detail="Inactive user")
 
     return current_user
-
-
-async def create_user(user: User, password: str) -> None:
-    user_in_db = UserInDB(hashed_password=get_password_hash(password), **(user.dict()))
-    await get_repository().create_user(user_in_db)

@@ -4,9 +4,9 @@ from typing import Callable
 from fastapi import APIRouter
 from typer import Typer
 
-from wheke.core.repository import Repository
+from wheke.core.service import Service
 
-RepositoriesList = list[tuple[type[Repository], Callable]]
+ServiceList = list[tuple[type[Service], Callable]]
 
 
 class Pod:
@@ -18,7 +18,7 @@ class Pod:
     static_url: str | None
     static_folder: str | None
 
-    repositories: RepositoriesList
+    services: ServiceList
 
     cli: Typer | None
 
@@ -30,7 +30,7 @@ class Pod:
         router: APIRouter | None = None,
         static_url: str | None = None,
         static_folder: str | None = None,
-        repositories: RepositoriesList | None = None,
+        services: ServiceList | None = None,
         cli: Typer | None = None,
     ) -> None:
         self.name = name
@@ -38,5 +38,5 @@ class Pod:
         self.router = router
         self.static_url = static_url
         self.static_folder = static_folder
-        self.repositories = repositories or []
+        self.services = services or []
         self.cli = cli

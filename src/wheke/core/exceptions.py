@@ -1,6 +1,6 @@
-class RepositoryNotSetException(Exception):
+class ServiceTypeNotRegistered(Exception):
     pass
 
 
-class RepositoryAlreadySetException(Exception):
+class ServiceTypeAlreadyRegistered(Exception):
     pass

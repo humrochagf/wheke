@@ -3,17 +3,19 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 
-from wheke.auth.security import (Token, User, authenticate_user,
-                                 create_access_token, get_current_active_user)
+from wheke.auth.models import Token, User
+from wheke.auth.security import get_current_active_user
+from wheke.auth.service import AuthService, get_auth_service
 
 router = APIRouter(prefix="/auth")
 
 
 @router.post("/token")
 async def login_for_access_token(
-    form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
+    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
+    service: Annotated[AuthService, Depends(get_auth_service)],
 ) -> Token:
-    user = await authenticate_user(form_data.username, form_data.password)
+    user = await service.authenticate_user(form_data.username, form_data.password)
 
     if not user:
         raise HTTPException(
@@ -22,7 +24,7 @@ async def login_for_access_token(
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    return create_access_token(data={"sub": user.username})
+    return service.create_access_token(data={"sub": user.username})
 
 
 @router.get("/users/me/", response_model=User)
@@ -30,10 +32,3 @@ async def read_users_me(
     current_user: Annotated[User, Depends(get_current_active_user)]
 ) -> User:
     return current_user
-
-
-@router.get("/users/me/items/")
-async def read_own_items(
-    current_user: Annotated[User, Depends(get_current_active_user)]
-) -> list:
-    return [{"item_id": "Foo", "owner": current_user.username}]

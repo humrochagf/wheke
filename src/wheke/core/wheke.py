@@ -6,7 +6,7 @@ from typer import Typer
 
 from wheke.core.cli import cli
 from wheke.core.pod import Pod
-from wheke.core.repository import RepositoryRegistry
+from wheke.core.service import ServiceRegistry
 from wheke.core.settings import settings
 
 
@@ -23,8 +23,8 @@ class Wheke:
             module_name, pod_name = pod_full_name.rsplit(".", 1)
             pod: Pod = getattr(import_module(module_name), pod_name)
 
-            for repository_class, repository_factory in pod.repositories:
-                RepositoryRegistry.register(repository_class, repository_factory)
+            for service_type, service_factory in pod.services:
+                ServiceRegistry.register(service_type, service_factory)
 
             if pod.static_url is not None and pod.static_folder is not None:
                 app.mount(
@@ -45,8 +45,8 @@ class Wheke:
             module_name, pod_name = pod_full_name.rsplit(".", 1)
             pod: Pod = getattr(import_module(module_name), pod_name)
 
-            for repository_class, repository_factory in pod.repositories:
-                RepositoryRegistry.register(repository_class, repository_factory)
+            for service_type, service_factory in pod.services:
+                ServiceRegistry.register(service_type, service_factory)
 
             if pod.cli:
                 cli.add_typer(pod.cli, name=pod.name)
