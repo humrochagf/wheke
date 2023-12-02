@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from typer import Typer
 
+from wheke.core.cli import cli
 from wheke.core.pod import Pod
 from wheke.core.repository import RepositoryRegistry
 from wheke.core.settings import settings
@@ -40,8 +41,6 @@ class Wheke:
         return app
 
     def create_cli(self) -> Typer:
-        cli = Typer()
-
         for pod_full_name in settings.pods:
             module_name, pod_name = pod_full_name.rsplit(".", 1)
             pod: Pod = getattr(import_module(module_name), pod_name)
