@@ -7,6 +7,6 @@ cli = typer.Typer()
 console = Console()
 
 
-@cli.command()
+@cli.command(short_help="Display wheke version")
 def version() -> None:
     console.print(__version__, highlight=False)

@@ -9,7 +9,7 @@ from wheke.auth.models import User
 from wheke.auth.repository import get_repository
 from wheke.auth.security import create_user
 
-cli = typer.Typer()
+cli = typer.Typer(short_help="Auth module commands")
 console = Console()
 
 
