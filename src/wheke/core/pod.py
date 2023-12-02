@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import Callable
 
 from fastapi import APIRouter
+from typer import Typer
 
 from wheke.core.repository import Repository
 
@@ -19,6 +20,8 @@ class Pod:
 
     repositories: RepositoriesList
 
+    cli: Typer | None
+
     def __init__(
         self,
         name: str,
@@ -28,6 +31,7 @@ class Pod:
         static_url: str | None = None,
         static_folder: str | None = None,
         repositories: RepositoriesList | None = None,
+        cli: Typer | None = None,
     ) -> None:
         self.name = name
         self.root_path = root_path
@@ -35,3 +39,4 @@ class Pod:
         self.static_url = static_url
         self.static_folder = static_folder
         self.repositories = repositories or []
+        self.cli = cli

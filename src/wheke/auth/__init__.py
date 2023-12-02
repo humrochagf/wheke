@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from wheke.auth.cli import cli
 from wheke.auth.repository import AuthRepository, make_repository
 from wheke.auth.routes import router
 from wheke.core.pod import Pod
@@ -9,4 +10,5 @@ auth_pod = Pod(
     Path(__file__).parent,
     router=router,
     repositories=[(AuthRepository, make_repository)],
+    cli=cli,
 )

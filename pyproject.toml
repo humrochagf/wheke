@@ -32,8 +32,12 @@ dependencies = [
   "pydantic-settings",
   "python-jose[cryptography]",
   "python-multipart",
+  "rich",
   "uvicorn[standard]",
 ]
+
+[project.scripts]
+wheke = "wheke.__main__:cli"
 
 [project.urls]
 Documentation = "https://github.com/unknown/wheke#readme"

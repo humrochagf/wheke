@@ -77,3 +77,8 @@ async def get_current_active_user(
         raise HTTPException(status_code=400, detail="Inactive user")
 
     return current_user
+
+
+async def create_user(user: User, password: str) -> None:
+    user_in_db = UserInDB(hashed_password=get_password_hash(password), **(user.dict()))
+    await get_repository().create_user(user_in_db)

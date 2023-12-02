@@ -13,7 +13,7 @@ from wheke.core.settings import settings
 
 class AuthRepository(Repository):
     @abstractmethod
-    async def get_user(self, username: str) -> UserInDB:
+    async def get_user(self, username: str) -> UserInDB | None:
         ...
 
     @abstractmethod
@@ -25,13 +25,13 @@ class TinyAuthRepository(AuthRepository):
     db_factory: Callable[[], AIOTinyDB]
 
     def __init__(self, connection_string: str) -> None:
-        self.db_factory = partial(
-            AIOTinyDB, connection_string, create_dirs=True, encoding="utf-8"
-        )
+        self.db_factory = partial(AIOTinyDB, connection_string)
 
-    async def get_user(self, username: str) -> UserInDB:
+    async def get_user(self, username: str) -> UserInDB | None:
         async with self.db_factory() as db:
-            return UserInDB(**db.search(where("username") == username)[0])
+            if result := db.search(where("username") == username):
+                return UserInDB(**result[0])
+        return None
 
     async def create_user(self, user: UserInDB) -> None:
         async with self.db_factory() as db:
