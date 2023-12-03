@@ -3,6 +3,7 @@ from typer.testing import CliRunner
 
 from wheke import Wheke
 from wheke.__about__ import __version__
+from wheke.__main__ import cli
 from wheke.demo import demo_pod
 
 runner = CliRunner()
@@ -18,9 +19,7 @@ def test_create_cli() -> None:
 
 
 def test_version() -> None:
-    app = Wheke().create_cli()
-
-    result = runner.invoke(app, "version")
+    result = runner.invoke(cli, "version")
 
     assert result.exit_code == 0
     assert result.stdout.strip() == __version__

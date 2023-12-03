@@ -1,3 +1,4 @@
+from collections.abc import Generator, Iterable
 from importlib import import_module
 
 from fastapi import FastAPI
@@ -16,9 +17,7 @@ class Wheke:
     def __init__(self) -> None:
         self.pods = []
 
-    def create_app(self) -> FastAPI:
-        app = FastAPI(title=settings.project_name)
-
+    def _gen_pods(self) -> Iterable[Pod]:
         for pod_full_name in settings.pods:
             module_name, pod_name = pod_full_name.rsplit(".", 1)
             pod: Pod = getattr(import_module(module_name), pod_name)
@@ -26,6 +25,12 @@ class Wheke:
             for service_type, service_factory in pod.services:
                 ServiceRegistry.register(service_type, service_factory)
 
+            yield pod
+
+    def create_app(self) -> FastAPI:
+        app = FastAPI(title=settings.project_name)
+
+        for pod in self._gen_pods():
             if pod.static_url is not None and pod.static_folder is not None:
                 app.mount(
                     pod.static_url,
@@ -45,13 +50,7 @@ class Wheke:
         cli.callback()(empty_callback)
         cli.command("version", help="Show Wheke version")(version)
 
-        for pod_full_name in settings.pods:
-            module_name, pod_name = pod_full_name.rsplit(".", 1)
-            pod: Pod = getattr(import_module(module_name), pod_name)
-
-            for service_type, service_factory in pod.services:
-                ServiceRegistry.register(service_type, service_factory)
-
+        for pod in self._gen_pods():
             if pod.cli:
                 cli.add_typer(pod.cli, name=pod.name)
 

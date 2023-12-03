@@ -167,6 +167,7 @@ wheke = ["src/wheke", "*/wheke/src/wheke"]
 tests = ["tests", "*/wheke/tests"]
 
 [tool.coverage.report]
+show_missing = true
 exclude_lines = [
   "no cov",
   "if __name__ == .__main__.:",
