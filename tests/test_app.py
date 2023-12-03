@@ -1,8 +1,8 @@
 from fastapi import FastAPI
+from fastapi.testclient import TestClient
 
 from wheke import Wheke
-from wheke.auth import auth_pod
-from wheke.frontend import frontend_pod
+from wheke.demo import DEMO_PAGE, demo_pod
 
 
 def test_create_app() -> None:
@@ -11,5 +11,11 @@ def test_create_app() -> None:
     app = wheke.create_app()
 
     assert type(app) is FastAPI
-    assert auth_pod in wheke.pods
-    assert frontend_pod in wheke.pods
+    assert demo_pod in wheke.pods
+
+
+def test_demo_pod(client: TestClient) -> None:
+    response = client.get("/")
+
+    assert response.status_code == 200
+    assert response.text == DEMO_PAGE

@@ -1,5 +1,5 @@
-from wheke.core.pod import Pod
-from wheke.core.wheke import Wheke
+from wheke.core import Wheke
+from wheke.pod import Pod
 
 __all__ = [
     "Pod",

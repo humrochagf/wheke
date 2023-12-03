@@ -24,16 +24,11 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
 dependencies = [
-  "aiotinydb",
-  "email-validator",
   "fastapi",
-  "jinja2",
-  "passlib[bcrypt]",
   "pydantic",
   "pydantic-settings",
-  "python-jose[cryptography]",
-  "python-multipart",
   "rich",
+  "typer",
   "uvicorn[standard]",
 ]
 
@@ -50,10 +45,11 @@ path = "src/wheke/__about__.py"
 
 [tool.hatch.envs.default]
 dependencies = [
-  "coverage[toml]",
-  "pytest",
   "black",
+  "coverage[toml]",
+  "httpx",
   "mypy",
+  "pytest",
   "ruff",
 ]
 [tool.hatch.envs.default.scripts]

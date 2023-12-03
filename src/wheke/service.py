@@ -1,7 +1,7 @@
 from abc import ABC
-from typing import Callable
+from typing import Callable, ClassVar
 
-from wheke.core.exceptions import ServiceTypeNotRegistered
+from wheke.exceptions import ServiceTypeNotRegisteredError
 
 
 class Service(ABC):
@@ -9,7 +9,7 @@ class Service(ABC):
 
 
 class ServiceRegistry:
-    _registry: dict[type[Service], Callable[[], Service]] = {}
+    _registry: ClassVar[dict[type[Service], Callable[[], Service]]] = {}
 
     @classmethod
     def register(
@@ -24,6 +24,6 @@ class ServiceRegistry:
         service_factory = cls._registry.get(service_type)
 
         if not service_factory:
-            raise ServiceTypeNotRegistered
+            raise ServiceTypeNotRegisteredError
 
         return service_factory()

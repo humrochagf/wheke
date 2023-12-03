@@ -1,17 +1,15 @@
-from pathlib import Path
 from typing import Callable
 
 from fastapi import APIRouter
 from typer import Typer
 
-from wheke.core.service import Service
+from wheke.service import Service
 
 ServiceList = list[tuple[type[Service], Callable]]
 
 
 class Pod:
     name: str
-    root_path: Path
 
     router: APIRouter | None
 
@@ -25,7 +23,6 @@ class Pod:
     def __init__(
         self,
         name: str,
-        root_path: Path,
         *,
         router: APIRouter | None = None,
         static_url: str | None = None,
@@ -34,7 +31,6 @@ class Pod:
         cli: Typer | None = None,
     ) -> None:
         self.name = name
-        self.root_path = root_path
         self.router = router
         self.static_url = static_url
         self.static_folder = static_folder

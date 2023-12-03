@@ -4,10 +4,10 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from typer import Typer
 
-from wheke.core.cli import cli
-from wheke.core.pod import Pod
-from wheke.core.service import ServiceRegistry
-from wheke.core.settings import settings
+from wheke.cli import empty_callback, version
+from wheke.pod import Pod
+from wheke.service import ServiceRegistry
+from wheke.settings import settings
 
 
 class Wheke:
@@ -29,7 +29,7 @@ class Wheke:
             if pod.static_url is not None and pod.static_folder is not None:
                 app.mount(
                     pod.static_url,
-                    StaticFiles(directory=pod.root_path / pod.static_folder),
+                    StaticFiles(directory=pod.static_folder),
                     name=f"{pod.name}_static",
                 )
 
@@ -41,6 +41,10 @@ class Wheke:
         return app
 
     def create_cli(self) -> Typer:
+        cli = Typer(no_args_is_help=True)
+        cli.callback()(empty_callback)
+        cli.command("version", help="Show Wheke version")(version)
+
         for pod_full_name in settings.pods:
             module_name, pod_name = pod_full_name.rsplit(".", 1)
             pod: Pod = getattr(import_module(module_name), pod_name)
