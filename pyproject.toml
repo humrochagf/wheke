@@ -29,7 +29,6 @@ dependencies = [
   "pydantic-settings",
   "rich",
   "typer",
-  "uvicorn[standard]",
 ]
 
 [project.scripts]
