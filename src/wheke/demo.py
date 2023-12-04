@@ -20,12 +20,13 @@ DEMO_PAGE = """
     .text-center{text-align:center;}
     .text-6xl{font-size:3.75rem;line-height:1;}
     .font-black{font-weight:900;}
+    .font-sans{font-family: Arial, sans-serif;}
   </style>
 </head>
 <body class="text-center flex flex-col justify-between h-100vh m-0">
   <div>
     <h1 class="font-sans font-black text-6xl">Wheke</h1>
-    <img class="max-w-100vw" src="static/img/wheke.png" alt="Wheke"></a>
+    <img class="max-w-100vw" src="" alt="Wheke"></a>
     <br>
     <em>A cute framework for small self-hosted apps</em>
   </div>
