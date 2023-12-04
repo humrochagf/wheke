@@ -8,7 +8,8 @@ from wheke import Pod
 from wheke.core import Wheke
 from wheke.service import Service, ServiceRegistry
 
-static_folder = Path(__file__).parent / "static"
+STATIC_PATH = Path(__file__).parent / "static"
+
 router = APIRouter()
 cli = Typer()
 
@@ -45,7 +46,7 @@ test_pod = Pod(
     "test",
     router=router,
     static_url="/static",
-    static_folder=str(static_folder),
+    static_path=str(STATIC_PATH),
     services=[(TestService, test_service_factory)],
     cli=cli,
 )

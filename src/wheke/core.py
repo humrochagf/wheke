@@ -37,10 +37,10 @@ class Wheke:
         app = FastAPI(title=settings.project_name)
 
         for pod in self.pods:
-            if pod.static_url is not None and pod.static_folder is not None:
+            if pod.static_url is not None and pod.static_path is not None:
                 app.mount(
                     pod.static_url,
-                    StaticFiles(directory=pod.static_folder),
+                    StaticFiles(directory=pod.static_path),
                     name=f"{pod.name}_static",
                 )
 
