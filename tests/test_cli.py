@@ -25,7 +25,7 @@ def test_version() -> None:
     assert result.stdout.strip() == __version__
 
 
-def test_hello(cli) -> None:
+def test_hello(cli: Typer) -> None:
     result = runner.invoke(cli, ["test", "hello"])
 
     assert result.exit_code == 0
