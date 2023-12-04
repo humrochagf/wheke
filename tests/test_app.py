@@ -19,3 +19,17 @@ def test_demo_pod(client: TestClient) -> None:
 
     assert response.status_code == 200
     assert response.text == DEMO_PAGE
+
+
+def test_static(client: TestClient) -> None:
+    response = client.get("/static/test.txt")
+
+    assert response.status_code == 200
+    assert response.text.strip() == "test"
+
+
+def test_ping(client: TestClient) -> None:
+    response = client.get("/ping")
+
+    assert response.status_code == 200
+    assert response.json() == {"value": "pong"}
