@@ -7,7 +7,7 @@ name = "wheke"
 dynamic = ["version"]
 description = "A cute framework for small self-hosted apps"
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.9"
 license = "MIT"
 keywords = []
 authors = [
@@ -35,62 +35,31 @@ dependencies = [
 wheke = "wheke.__main__:cli"
 
 [project.urls]
-Documentation = "https://github.com/unknown/wheke#readme"
-Issues = "https://github.com/unknown/wheke/issues"
-Source = "https://github.com/unknown/wheke"
+Documentation = "https://github.com/humrochagf/wheke#readme"
+Issues = "https://github.com/humrochagf/wheke/issues"
+Source = "https://github.com/humrochagf/wheke"
 
 [tool.hatch.version]
 path = "src/wheke/__about__.py"
 
 [tool.hatch.envs.default]
 dependencies = [
-  "black",
-  "coverage[toml]",
   "httpx",
   "mypy",
   "pytest",
+  "pytest-cov",
   "ruff",
 ]
+
 [tool.hatch.envs.default.scripts]
-test = "pytest {args:tests}"
-test-cov = "coverage run -m pytest {args:tests}"
-cov-report = [
-  "- coverage combine",
-  "coverage report",
-]
-cov = [
-  "test-cov",
-  "cov-report",
-]
+cov = "pytest --cov"
+tests = "pytest {args:tests}"
 typing = "mypy --install-types --non-interactive {args:src/wheke tests}"
-style = [
-  "ruff {args:.}",
-  "black --check --diff {args:.}",
-]
-fmt = [
-  "black {args:.}",
-  "ruff --fix {args:.}",
-  "style",
-]
-all = [
-  "style",
-  "typing",
-  "cov",
-]
+lint = "ruff check {args:.}"
+fmt = "ruff format {args:.}"
 
 [[tool.hatch.envs.all.matrix]]
 python = ["3.9", "3.10", "3.11", "3.12"]
-
-[tool.black]
-exclude = """
-.env
-| .hatch
-| .mypy_cache
-| .venv
-| __pycache__
-| env
-| venv
-"""
 
 [tool.ruff]
 exclude = [
@@ -130,6 +99,8 @@ select = [
   "YTT",
 ]
 ignore = [
+  # Same line string implicit string concatenation
+  "ISC001",
   # Allow non-abstract empty methods in abstract base classes
   "B027",
   # Allow boolean positional values in function calls, like `dict.get(... True)`
@@ -178,3 +149,12 @@ exclude_lines = [
 disallow_incomplete_defs = true
 check_untyped_defs = true
 warn_unused_ignores = true
+exclude = """
+  .env
+  | .hatch
+  | .mypy_cache
+  | .venv
+  | __pycache__
+  | env
+  | venv
+"""
