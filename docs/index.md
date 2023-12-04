@@ -1,9 +1,5 @@
-<h1 align="center" style="font-size: 3rem">
-  Wheke
-</h1>
-
 <p align="center">
-  <img src="https://github.com/humrochagf/wheke/blob/main/docs/wheke.png?raw=true" alt="Wheke"></a>
+  <img src="wheke.png" alt="Wheke"></a>
 </p>
 
 <p align="center">
@@ -22,6 +18,8 @@
 </p>
 
 ---
+
+# Introduction
 
 **Wheke** is a framework built on top of [FastAPI](https://fastapi.tiangolo.com/) that is focussed in small scale self-hosted applications and having fun 🎉
 

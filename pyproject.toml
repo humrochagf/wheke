@@ -58,6 +58,16 @@ typing = "mypy --install-types --non-interactive {args:src/wheke tests}"
 lint = "ruff check {args:.}"
 fmt = "ruff format {args:.}"
 
+[tool.hatch.envs.docs]
+dependencies = [
+  "mkdocs-material",
+  "mkdocstrings[python]",
+]
+
+[tool.hatch.envs.docs.scripts]
+build = "mkdocs build"
+server = "mkdocs serve"
+
 [[tool.hatch.envs.all.matrix]]
 python = ["3.9", "3.10", "3.11", "3.12"]
 

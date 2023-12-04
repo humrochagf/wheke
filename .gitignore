@@ -11,4 +11,5 @@
 .venv/
 .vscode
 dist/
+site/
 venv/
