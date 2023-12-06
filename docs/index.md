@@ -9,6 +9,9 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/humrochagf/wheke/actions">
+    <img src="https://github.com/humrochagf/wheke/workflows/Test%20Suite/badge.svg" alt="Test Suite">
+  </a>
   <a href="https://pypi.org/project/wheke">
     <img src="https://img.shields.io/pypi/v/wheke.svg" alt="PyPI - Version">
   </a>
