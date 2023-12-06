@@ -47,7 +47,7 @@ jobs:
       run: hatch run docs:build
 
     - name: Create archive
-      run: git archive -o site.zip gh-pages
+      run: git archive -o site.zip site
 
     - uses: actions/upload-artifact@v3
       with:
