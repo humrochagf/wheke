@@ -7,6 +7,7 @@ repo_url: https://github.com/humrochagf/wheke
 
 nav:
   - Introduction: index.md
+  - Pods: pods.md
   - API Docs: api.md
 
 theme:
