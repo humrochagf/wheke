@@ -34,7 +34,7 @@ dependencies = [
 wheke = "wheke.__main__:cli"
 
 [project.urls]
-Documentation = "https://github.com/humrochagf/wheke#readme"
+Documentation = "https://wheke.humberto.io/"
 Issues = "https://github.com/humrochagf/wheke/issues"
 Source = "https://github.com/humrochagf/wheke"
 

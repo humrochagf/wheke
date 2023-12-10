@@ -33,3 +33,7 @@
 ```shell
 pip install wheke
 ```
+
+## Documentation
+
+For more info check out [Wheke Documentation](https://wheke.humberto.io/)
