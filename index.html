@@ -434,12 +434,31 @@
 
 <hr />
 <h1 id="introduction">Introduction</h1>
-<p><strong>Wheke</strong> is an opinionated framework to build <a href="https://fastapi.tiangolo.com/">FastAPI</a> based web apps that are focussed in small scale self-hosted applications and having fun 🎉</p>
+<p><strong>Wheke</strong> is an opinionated framework to build small scale self-hosted applications and it stands on top of well known packages:</p>
+<ul>
+<li><a href="https://fastapi.tiangolo.com/">FastAPI</a> to build the web services.</li>
+<li><a href="https://typer.tiangolo.com/">Typer</a> to build great cli.</li>
+<li><a href="https://docs.pydantic.dev/latest/">Pydantic</a> to build schemas and <code>.env</code> based settings.</li>
+<li><a href="https://rich.readthedocs.io/en/stable/">Rich</a> to make your app shine.</li>
+</ul>
+<p>It aims to provide you:</p>
+<ul>
+<li>An opinionated structure to write you apps.</li>
+<li>Modular architecture by plugging Pods to it.</li>
+<li>Self contained by default.</li>
+<li>Stateless and lazy loading when possible.</li>
+<li>Nosql friendly structure.</li>
+<li>Less boilerplate and more fun.</li>
+</ul>
+<p>Wheke is also inspired by <a href="https://www.djangoproject.com/">Django</a> and recognises its strengths.</p>
+<p>If you are looking to build a <strong>self-hosted SQL based app</strong> and don't want to decide each bit of your stack, you'll probably be better served with <strong>Django</strong>.</p>
+<p>If you want to <strong>customize</strong> all of your stack, <strong>FastAPI</strong> is the way to go.</p>
+<p>If you are looking for <strong>something in between</strong>, then give <strong>Wheke</strong> a spin and see if you like it.</p>
 <h2 id="installation">Installation</h2>
 <p>To install Wheke run:</p>
 <div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>wheke
 </code></pre></div>
-<p>Then you need a ASGI web server to serve the FastAPI app created by wheke:</p>
+<p>Then you need a ASGI web server to serve the FastAPI app created by Wheke:</p>
 <div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>uvicorn<span class="o">[</span>standard<span class="o">]</span>
 </code></pre></div>
 <h2 id="example-app">Example App</h2>
@@ -481,11 +500,10 @@
 </code></pre></div>
 <p>Now you can check the app at <a href="http://127.0.0.1:8000">http://127.0.0.1:8000</a></p>
 <p><img alt="wheke homepage" src="img/wheke-homepage.png" /></p>
-<p>And you can also check the created clock endpoint at <a href="http://localhost:8000/clock?tz=America/Montreal">http://localhost:8000/clock?tz=America/Montreal</a></p>
-<p>You should get a response like this:</p>
+<p>You can also check the created clock endpoint at <a href="http://localhost:8000/clock?tz=America/Montreal">http://localhost:8000/clock?tz=America/Montreal</a> and the response should look like this:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;clock&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-12-09T20:55:35.194766-05:00&quot;</span><span class="p">}</span>
 </code></pre></div>
-<p>Also, as any <strong>FastAPI</strong> apps you have built-in api docs at <a href="http://localhost:8000/docs">http://localhost:8000/docs</a></p>
+<p>As any <strong>FastAPI</strong> app you have built-in api docs at <a href="http://localhost:8000/docs">http://localhost:8000/docs</a></p>
 
 
 
