@@ -24,7 +24,29 @@
 
 # Introduction
 
-**Wheke** is an opinionated framework to build [FastAPI](https://fastapi.tiangolo.com/) based web apps that are focussed in small scale self-hosted applications and having fun 🎉
+**Wheke** is an opinionated framework to build small scale self-hosted applications and it stands on top of well known packages:
+
+- [FastAPI](https://fastapi.tiangolo.com/) to build the web services.
+- [Typer](https://typer.tiangolo.com/) to build great cli.
+- [Pydantic](https://docs.pydantic.dev/latest/) to build schemas and `.env` based settings.
+- [Rich](https://rich.readthedocs.io/en/stable/) to make your app shine.
+
+It aims to provide you:
+
+- An opinionated structure to write you apps.
+- Modular architecture by plugging Pods to it.
+- Self contained by default.
+- Stateless and lazy loading when possible.
+- Nosql friendly structure.
+- Less boilerplate and more fun.
+
+Wheke is also inspired by [Django](https://www.djangoproject.com/) and recognises its strengths.
+
+If you are looking to build a **self-hosted SQL based app** and don't want to decide each bit of your stack, you'll probably be better served with **Django**.
+
+If you want to **customize** all of your stack, **FastAPI** is the way to go.
+
+If you are looking for **something in between**, then give **Wheke** a spin and see if you like it.
 
 ## Installation
 
@@ -34,7 +56,7 @@ To install Wheke run:
 pip install wheke
 ```
 
-Then you need a ASGI web server to serve the FastAPI app created by wheke:
+Then you need a ASGI web server to serve the FastAPI app created by Wheke:
 
 ```shell
 pip install uvicorn[standard]
@@ -88,12 +110,10 @@ Now you can check the app at [http://127.0.0.1:8000](http://127.0.0.1:8000)
 
 ![wheke homepage](img/wheke-homepage.png)
 
-And you can also check the created clock endpoint at [http://localhost:8000/clock?tz=America/Montreal](http://localhost:8000/clock?tz=America/Montreal)
-
-You should get a response like this:
+You can also check the created clock endpoint at [http://localhost:8000/clock?tz=America/Montreal](http://localhost:8000/clock?tz=America/Montreal) and the response should look like this:
 
 ```json
 {"clock": "2023-12-09T20:55:35.194766-05:00"}
 ```
 
-Also, as any **FastAPI** apps you have built-in api docs at [http://localhost:8000/docs](http://localhost:8000/docs)
+As any **FastAPI** app you have built-in api docs at [http://localhost:8000/docs](http://localhost:8000/docs)
