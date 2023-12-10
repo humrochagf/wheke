@@ -11,7 +11,12 @@ from wheke.settings import settings
 
 
 class Wheke:
+    """
+    The Wheke class is the entry point to build an application.
+    """
+
     pods: list[Pod]
+    "The list of pods plugged to Wheke."
 
     def __init__(self) -> None:
         self.pods = []
@@ -20,6 +25,9 @@ class Wheke:
             self.add_pod(pod)
 
     def add_pod(self, pod_to_add: Pod | str) -> None:
+        """
+        Programatically plug a `Pod` into Wheke.
+        """
         pod: Pod
 
         if isinstance(pod_to_add, str):
@@ -34,6 +42,9 @@ class Wheke:
         self.pods.append(pod)
 
     def create_app(self) -> FastAPI:
+        """
+        Create a FastAPI app with all plugged pods.
+        """
         app = FastAPI(title=settings.project_name)
 
         for pod in self.pods:
@@ -50,6 +61,9 @@ class Wheke:
         return app
 
     def create_cli(self) -> Typer:
+        """
+        Create a Typer cli with all plugged pods.
+        """
         cli = Typer(no_args_is_help=True)
         cli.callback()(empty_callback)
         cli.command("version", help="Show Wheke version")(version)
