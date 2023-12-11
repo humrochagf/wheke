@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, status
 from fastapi.testclient import TestClient
 
 from wheke import Wheke
@@ -35,19 +35,19 @@ def test_create_app_with_empty_pod() -> None:
 def test_demo_pod(client: TestClient) -> None:
     response = client.get("/")
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert response.text == DEMO_PAGE
 
 
 def test_static(client: TestClient) -> None:
     response = client.get("/static/test.txt")
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert response.text.strip() == "test"
 
 
 def test_ping(client: TestClient) -> None:
     response = client.get("/ping")
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert response.json() == {"value": "pong"}
