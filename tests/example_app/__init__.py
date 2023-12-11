@@ -4,9 +4,7 @@ from typing import Annotated, cast
 from fastapi import APIRouter, Depends
 from typer import Typer, echo
 
-from wheke import Pod
-from wheke.core import Wheke
-from wheke.service import Service, ServiceRegistry
+from wheke import Pod, Service, ServiceRegistry, Wheke
 
 STATIC_PATH = Path(__file__).parent / "static"
 
