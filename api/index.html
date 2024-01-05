@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.1">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.3">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.45e1311d.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.50c56a3b.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
@@ -472,44 +472,20 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#wheke.Service" class="md-nav__link">
+  <a href="#wheke.aget_service" class="md-nav__link">
     <span class="md-ellipsis">
-      Service
+      aget_service()
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#wheke.ServiceRegistry" class="md-nav__link">
+  <a href="#wheke.get_service" class="md-nav__link">
     <span class="md-ellipsis">
-      ServiceRegistry
+      get_service()
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="ServiceRegistry">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#wheke.ServiceRegistry.register" class="md-nav__link">
-    <span class="md-ellipsis">
-      register()
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#wheke.ServiceRegistry.get" class="md-nav__link">
-    <span class="md-ellipsis">
-      get()
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -677,44 +653,20 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#wheke.Service" class="md-nav__link">
+  <a href="#wheke.aget_service" class="md-nav__link">
     <span class="md-ellipsis">
-      Service
+      aget_service()
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#wheke.ServiceRegistry" class="md-nav__link">
+  <a href="#wheke.get_service" class="md-nav__link">
     <span class="md-ellipsis">
-      ServiceRegistry
+      get_service()
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="ServiceRegistry">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#wheke.ServiceRegistry.register" class="md-nav__link">
-    <span class="md-ellipsis">
-      register()
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#wheke.ServiceRegistry.get" class="md-nav__link">
-    <span class="md-ellipsis">
-      get()
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1072,60 +1024,6 @@ and the service factory callable.</p>
 
 </div>
 
-<div class="doc doc-object doc-class">
-
-
-
-
-<h2 id="wheke.Service" class="doc doc-heading">
-          <span class="doc doc-object-name doc-class-name">Service</span>
-
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code><span title="abc.ABC">ABC</span></code></p>
-
-  
-      <p>The Service base class that all Wheke
-services must implement.</p>
-
-
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-class">
-
-
-
-
-<h2 id="wheke.ServiceRegistry" class="doc doc-heading">
-          <span class="doc doc-object-name doc-class-name">ServiceRegistry</span>
-
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-
-  
-      <p>ServiceRegistry used to register and get services.</p>
-
-
-  
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
 
 
 <div class="doc doc-object doc-function">
@@ -1133,22 +1031,19 @@ services must implement.</p>
 
 
 
-<h3 id="wheke.ServiceRegistry.register" class="doc doc-heading">
-          <span class="doc doc-object-name doc-function-name">register</span>
+<h2 id="wheke.aget_service" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">aget_service</span>
 
   
   <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
-</h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">register</span><span class="p">(</span><span class="n">service_type</span><span class="p">,</span> <span class="n">service_factory</span><span class="p">)</span>
+</h2>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">aget_service</span><span class="p">(</span><span class="n">service_type</span><span class="p">)</span>
 </code></pre></div>
 
   <div class="doc doc-contents ">
-  
-      <p>Register a service by providing its class
-and the service factory callable.</p>
 
   </div>
 
@@ -1160,34 +1055,19 @@ and the service factory callable.</p>
 
 
 
-<h3 id="wheke.ServiceRegistry.get" class="doc doc-heading">
-          <span class="doc doc-object-name doc-function-name">get</span>
+<h2 id="wheke.get_service" class="doc doc-heading">
+          <span class="doc doc-object-name doc-function-name">get_service</span>
 
-  
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
-  </span>
 
-</h3>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">get</span><span class="p">(</span><span class="n">service_type</span><span class="p">)</span>
+</h2>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">get_service</span><span class="p">(</span><span class="n">service_type</span><span class="p">)</span>
 </code></pre></div>
 
   <div class="doc doc-contents ">
-  
-      <p>Get a service by its class.</p>
 
   </div>
 
 </div>
-
-
-
-  </div>
-
-  </div>
-
-</div>
-
 
 
 
