@@ -27,6 +27,7 @@ dependencies = [
   "pydantic",
   "pydantic-settings",
   "rich",
+  "svcs",
   "typer",
 ]
 

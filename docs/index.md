@@ -27,6 +27,7 @@
 **Wheke** is an opinionated framework to build small scale self-hosted applications and it stands on top of well known packages:
 
 - [FastAPI](https://fastapi.tiangolo.com/) to build the web services.
+- [svcs](https://svcs.hynek.me/) to have a robust service registry.
 - [Typer](https://typer.tiangolo.com/) to build great cli.
 - [Pydantic](https://docs.pydantic.dev/latest/) to build schemas and `.env` based settings.
 - [Rich](https://rich.readthedocs.io/en/stable/) to make your app shine.

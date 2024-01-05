@@ -1,46 +1,19 @@
-from abc import ABC
-from collections.abc import Callable
-from typing import ClassVar
+from typing import TypeVar
 
-from wheke.exceptions import ServiceTypeNotRegisteredError
+from svcs import Container, Registry
 
+T = TypeVar("T")
 
-class Service(ABC):
-    """
-    The Service base class that all Wheke
-    services must implement.
-    """
-
-    pass
+_registry = Registry()
 
 
-class ServiceRegistry:
-    """
-    ServiceRegistry used to register and get services.
-    """
+def get_service_registry() -> Registry:
+    return _registry
 
-    _registry: ClassVar[dict[type[Service], Callable[[], Service]]] = {}
 
-    @classmethod
-    def register(
-        cls,
-        service_type: type[Service],
-        service_factory: Callable[[], Service],
-    ) -> None:
-        """
-        Register a service by providing its class
-        and the service factory callable.
-        """
-        cls._registry[service_type] = service_factory
+def get_service(service_type: type[T]) -> T:
+    return Container(_registry).get(service_type)
 
-    @classmethod
-    def get(cls, service_type: type[Service]) -> Service:
-        """
-        Get a service by its class.
-        """
-        service_factory = cls._registry.get(service_type)
 
-        if not service_factory:
-            raise ServiceTypeNotRegisteredError
-
-        return service_factory()
+async def aget_service(service_type: type[T]) -> T:
+    return await Container(_registry).aget(service_type)

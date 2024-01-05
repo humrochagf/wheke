@@ -6,7 +6,7 @@ from typer import Typer
 
 from wheke.cli import empty_callback, version
 from wheke.pod import Pod
-from wheke.service import ServiceRegistry
+from wheke.service import get_service_registry
 from wheke.settings import settings
 
 
@@ -37,7 +37,7 @@ class Wheke:
             pod = pod_to_add
 
         for service_type, service_factory in pod.services:
-            ServiceRegistry.register(service_type, service_factory)
+            get_service_registry().register_factory(service_type, service_factory)
 
         self.pods.append(pod)
 

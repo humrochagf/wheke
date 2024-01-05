@@ -1,10 +1,10 @@
 from wheke.core import Wheke
 from wheke.pod import Pod
-from wheke.service import Service, ServiceRegistry
+from wheke.service import aget_service, get_service
 
 __all__ = [
     "Pod",
     "Wheke",
-    "Service",
-    "ServiceRegistry",
+    "aget_service",
+    "get_service",
 ]

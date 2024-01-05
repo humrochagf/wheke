@@ -7,5 +7,5 @@
         members:
         - Wheke
         - Pod
-        - Service
-        - ServiceRegistry
+        - aget_service
+        - get_service

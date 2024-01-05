@@ -4,9 +4,7 @@ from pathlib import Path
 from fastapi import APIRouter
 from typer import Typer
 
-from wheke.service import Service
-
-ServiceList = list[tuple[type[Service], Callable]]
+ServiceList = list[tuple[type, Callable]]
 
 
 class Pod:

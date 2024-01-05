@@ -51,3 +51,10 @@ def test_ping(client: TestClient) -> None:
 
     assert response.status_code == status.HTTP_200_OK
     assert response.json() == {"value": "pong"}
+
+
+def test_aping(client: TestClient) -> None:
+    response = client.get("/aping")
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json() == {"value": "pong"}
