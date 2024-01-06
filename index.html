@@ -489,6 +489,7 @@
 
 <span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">APIRouter</span><span class="p">,</span> <span class="n">HTTPException</span><span class="p">,</span> <span class="n">status</span>
 <span class="kn">from</span> <span class="nn">wheke</span> <span class="kn">import</span> <span class="n">Pod</span><span class="p">,</span> <span class="n">Wheke</span>
+<span class="kn">from</span> <span class="nn">wheke.demo</span> <span class="kn">import</span> <span class="n">demo_pod</span>
 
 <span class="n">router</span> <span class="o">=</span> <span class="n">APIRouter</span><span class="p">()</span>
 
@@ -512,6 +513,7 @@
 <span class="n">my_pod</span> <span class="o">=</span> <span class="n">Pod</span><span class="p">(</span><span class="s2">&quot;my-pod&quot;</span><span class="p">,</span> <span class="n">router</span><span class="o">=</span><span class="n">router</span><span class="p">)</span>
 
 <span class="n">wheke</span> <span class="o">=</span> <span class="n">Wheke</span><span class="p">()</span>
+<span class="n">wheke</span><span class="o">.</span><span class="n">add_pod</span><span class="p">(</span><span class="n">demo_pod</span><span class="p">)</span>
 <span class="n">wheke</span><span class="o">.</span><span class="n">add_pod</span><span class="p">(</span><span class="n">my_pod</span><span class="p">)</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">wheke</span><span class="o">.</span><span class="n">create_app</span><span class="p">()</span>
