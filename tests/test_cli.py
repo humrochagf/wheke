@@ -4,7 +4,6 @@ from typer.testing import CliRunner
 from wheke import Wheke
 from wheke.__about__ import __version__
 from wheke.__main__ import cli as main_cli
-from wheke.demo import demo_pod
 
 runner = CliRunner()
 
@@ -15,7 +14,6 @@ def test_create_cli() -> None:
     app = wheke.create_cli()
 
     assert type(app) is Typer
-    assert demo_pod in wheke.pods
 
 
 def test_version() -> None:

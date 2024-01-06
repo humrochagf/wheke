@@ -5,6 +5,7 @@ from fastapi import APIRouter, Depends
 from typer import Typer, echo
 
 from wheke import Pod, Wheke, get_service
+from wheke.demo import demo_pod
 from wheke.service import aget_service
 
 STATIC_PATH = Path(__file__).parent / "static"
@@ -72,4 +73,5 @@ test_pod = Pod(
 )
 
 wheke = Wheke()
+wheke.add_pod(demo_pod)
 wheke.add_pod(test_pod)

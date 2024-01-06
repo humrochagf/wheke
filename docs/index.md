@@ -73,6 +73,7 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from fastapi import APIRouter, HTTPException, status
 from wheke import Pod, Wheke
+from wheke.demo import demo_pod
 
 router = APIRouter()
 
@@ -96,6 +97,7 @@ def clock(tz: str | None = None) -> dict:
 my_pod = Pod("my-pod", router=router)
 
 wheke = Wheke()
+wheke.add_pod(demo_pod)
 wheke.add_pod(my_pod)
 
 app = wheke.create_app()
