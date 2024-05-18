@@ -7,6 +7,7 @@
         members:
         - Wheke
         - Pod
+        - ServiceList
         - aget_service
         - get_service
         - settings
