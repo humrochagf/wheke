@@ -3,7 +3,7 @@ from pathlib import Path
 from fastapi import APIRouter, Response
 from fastapi.responses import HTMLResponse
 
-from wheke.pod import Pod
+from ._pod import Pod
 
 STATIC_PATH = Path(__file__).resolve().parent / "static"
 

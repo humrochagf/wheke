@@ -71,7 +71,19 @@ server = "mkdocs serve"
 [[tool.hatch.envs.all.matrix]]
 python = ["3.10", "3.11", "3.12"]
 
-[tool.ruff]
+[tool.isort]
+profile = "black"
+skip = [
+  ".env",
+  ".hatch",
+  ".mypy_cache",
+  ".venv",
+  "__pycache__",
+  "env",
+  "venv",
+]
+
+[tool.ruff.lint]
 exclude = [
   ".env",
   ".hatch",
@@ -125,13 +137,10 @@ unfixable = [
   "F401",
 ]
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 known-first-party = ["wheke"]
 
-[tool.ruff.flake8-tidy-imports]
-ban-relative-imports = "all"
-
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 # Tests can use magic values, assertions, and relative imports
 "tests/**/*" = ["PLR2004", "S101", "TID252"]
 

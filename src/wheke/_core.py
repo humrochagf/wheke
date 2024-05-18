@@ -4,10 +4,10 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from typer import Typer
 
-from wheke.cli import empty_callback, version
-from wheke.pod import Pod
-from wheke.service import get_service_registry
-from wheke.settings import settings
+from ._cli import empty_callback, version
+from ._pod import Pod
+from ._service import get_service_registry
+from ._settings import settings
 
 
 class Wheke:

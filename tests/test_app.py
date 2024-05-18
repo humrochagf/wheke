@@ -1,10 +1,8 @@
 from fastapi import FastAPI, status
 from fastapi.testclient import TestClient
 
-from wheke import Wheke
-from wheke.demo import DEMO_PAGE, demo_pod
-from wheke.pod import Pod
-from wheke.settings import settings
+from wheke import Pod, Wheke, demo_pod, settings
+from wheke._demo import DEMO_PAGE
 
 
 def test_create_app() -> None:
@@ -17,7 +15,7 @@ def test_create_app() -> None:
 
 def test_create_app_with_demo_pod_in_settings() -> None:
     before_pods = settings.pods.copy()
-    settings.pods = ["wheke.demo.demo_pod"]
+    settings.pods = ["wheke.demo_pod"]
 
     wheke = Wheke()
 
