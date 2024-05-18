@@ -72,8 +72,7 @@ from datetime import datetime, timezone
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from fastapi import APIRouter, HTTPException, status
-from wheke import Pod, Wheke
-from wheke.demo import demo_pod
+from wheke import Pod, Wheke, demo_pod
 
 router = APIRouter()
 

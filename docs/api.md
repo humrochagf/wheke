@@ -9,3 +9,4 @@
         - Pod
         - aget_service
         - get_service
+        - settings
