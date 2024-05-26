@@ -8,7 +8,10 @@ class Settings(BaseSettings):
     pods: list[str] = Field(default_factory=list)
 
     model_config = SettingsConfigDict(
-        env_prefix="wheke_", env_file=".env", env_file_encoding="utf-8"
+        env_file=".env",
+        env_file_encoding="utf-8",
+        env_prefix="wheke_",
+        extra="allow",
     )
 
 
