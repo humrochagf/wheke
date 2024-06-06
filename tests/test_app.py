@@ -1,7 +1,7 @@
 from fastapi import FastAPI, status
 from fastapi.testclient import TestClient
 
-from wheke import Pod, Wheke, demo_pod, settings
+from wheke import Pod, Wheke, WhekeSettings, demo_pod, get_settings
 from wheke._demo import DEMO_PAGE
 
 
@@ -14,17 +14,15 @@ def test_create_app() -> None:
 
 
 def test_create_app_with_demo_pod_in_settings() -> None:
-    before_pods = settings.pods.copy()
+    settings = WhekeSettings()
     settings.pods = ["wheke.demo_pod"]
 
-    wheke = Wheke()
+    wheke = Wheke(settings)
 
     app = wheke.create_app()
 
     assert type(app) is FastAPI
     assert demo_pod in wheke.pods
-
-    settings.pods = before_pods
 
 
 def test_create_app_with_empty_pod() -> None:
@@ -36,6 +34,18 @@ def test_create_app_with_empty_pod() -> None:
 
     assert type(app) is FastAPI
     assert wheke.pods == [empty_pod]
+
+
+def test_create_app_with_custom_settings_class() -> None:
+    class CustomSettings(WhekeSettings):
+        test_setting: str = "test"
+
+    wheke = Wheke(CustomSettings)
+
+    app = wheke.create_app()
+
+    assert type(app) is FastAPI
+    assert get_settings(CustomSettings).test_setting == "test"
 
 
 def test_demo_pod(client: TestClient) -> None:

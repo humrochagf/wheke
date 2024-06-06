@@ -7,7 +7,7 @@ from typer import Typer
 from ._cli import empty_callback, version
 from ._pod import Pod
 from ._service import get_service_registry
-from ._settings import settings
+from ._settings import WhekeSettings, get_settings
 
 
 class Wheke:
@@ -18,10 +18,24 @@ class Wheke:
     pods: list[Pod]
     "The list of pods plugged to Wheke."
 
-    def __init__(self) -> None:
+    def __init__(
+        self, settings: WhekeSettings | type[WhekeSettings] | None = None
+    ) -> None:
         self.pods = []
 
-        for pod in settings.pods:
+        if settings is None:
+            settings_cls = WhekeSettings
+            settings_obj = WhekeSettings()
+        elif isinstance(settings, WhekeSettings):
+            settings_cls = type(settings)
+            settings_obj = settings
+        else:
+            settings_cls = settings
+            settings_obj = settings_cls()
+
+        get_service_registry().register_value(settings_cls, settings_obj)
+
+        for pod in get_settings(WhekeSettings).pods:
             self.add_pod(pod)
 
     def add_pod(self, pod_to_add: Pod | str) -> None:
@@ -45,7 +59,7 @@ class Wheke:
         """
         Create a FastAPI app with all plugged pods.
         """
-        app = FastAPI(title=settings.project_name)
+        app = FastAPI(title=get_settings(WhekeSettings).project_name)
 
         for pod in self.pods:
             if pod.static_url is not None and pod.static_path is not None:

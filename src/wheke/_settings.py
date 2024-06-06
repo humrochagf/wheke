@@ -1,8 +1,12 @@
+from typing import TypeVar
+
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+from ._service import get_service
 
-class Settings(BaseSettings):
+
+class WhekeSettings(BaseSettings):
     project_name: str = "Wheke"
 
     pods: list[str] = Field(default_factory=list)
@@ -15,4 +19,8 @@ class Settings(BaseSettings):
     )
 
 
-settings = Settings()
+T = TypeVar("T", bound=WhekeSettings)
+
+
+def get_settings(cls: type[T]) -> T:
+    return get_service(cls)

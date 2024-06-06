@@ -6,8 +6,9 @@
         show_source: false
         members:
         - Wheke
+        - WhekeSettings
         - Pod
         - ServiceList
         - aget_service
         - get_service
-        - settings
+        - get_settings
