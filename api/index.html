@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.24">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
     
     
       
@@ -361,15 +361,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#wheke.settings" class="md-nav__link">
-    <span class="md-ellipsis">
-      settings
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#wheke.Wheke" class="md-nav__link">
     <span class="md-ellipsis">
       Wheke
@@ -417,6 +408,15 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wheke.WhekeSettings" class="md-nav__link">
+    <span class="md-ellipsis">
+      WhekeSettings
+    </span>
+  </a>
   
 </li>
       
@@ -502,6 +502,15 @@
   <a href="#wheke.get_service" class="md-nav__link">
     <span class="md-ellipsis">
       get_service
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wheke.get_settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_settings
     </span>
   </a>
   
@@ -560,15 +569,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#wheke.settings" class="md-nav__link">
-    <span class="md-ellipsis">
-      settings
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#wheke.Wheke" class="md-nav__link">
     <span class="md-ellipsis">
       Wheke
@@ -616,6 +616,15 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wheke.WhekeSettings" class="md-nav__link">
+    <span class="md-ellipsis">
+      WhekeSettings
+    </span>
+  </a>
   
 </li>
       
@@ -701,6 +710,15 @@
   <a href="#wheke.get_service" class="md-nav__link">
     <span class="md-ellipsis">
       get_service
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wheke.get_settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_settings
     </span>
   </a>
   
@@ -765,27 +783,6 @@
 
 </div>
 
-<div class="doc doc-object doc-attribute">
-
-
-
-<h2 id="wheke.settings" class="doc doc-heading">
-            <span class="doc doc-object-name doc-attribute-name">settings</span>
-
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
-  </span>
-
-</h2>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">settings</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">()</span>
-</code></pre></div>
-
-    <div class="doc doc-contents ">
-    </div>
-
-</div>
-
 
 <div class="doc doc-object doc-class">
 
@@ -796,7 +793,7 @@
 
 
 </h2>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">Wheke</span><span class="p">()</span>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">Wheke</span><span class="p">(</span><span class="n">settings</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -896,6 +893,43 @@
     </div>
 
 </div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="wheke.WhekeSettings" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">WhekeSettings</span>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="pydantic_settings.BaseSettings">BaseSettings</span></code></p>
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
 
 
 
@@ -1115,6 +1149,23 @@ and the service factory callable.</p>
 
 </h2>
 <div class="doc-signature highlight"><pre><span></span><code><span class="nf">get_service</span><span class="p">(</span><span class="n">service_type</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="wheke.get_settings" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">get_settings</span>
+
+
+</h2>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">get_settings</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
