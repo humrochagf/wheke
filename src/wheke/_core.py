@@ -35,6 +35,9 @@ class Wheke:
 
         get_service_registry().register_value(settings_cls, settings_obj)
 
+        if settings_cls != WhekeSettings:
+            get_service_registry().register_value(WhekeSettings, settings_obj)
+
         for pod in get_settings(WhekeSettings).pods:
             self.add_pod(pod)
 
