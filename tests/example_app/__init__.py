@@ -4,7 +4,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 from typer import Typer, echo
 
-from wheke import Pod, Wheke, aget_service, demo_pod, get_service
+from wheke import Pod, ServiceConfig, Wheke, aget_service, demo_pod, get_service
 
 STATIC_PATH = Path(__file__).parent / "static"
 
@@ -64,12 +64,16 @@ test_pod = Pod(
     static_url="/static",
     static_path=str(STATIC_PATH),
     services=[
-        (PingService, ping_service_factory),
-        (APingService, aping_service_factory),
+        ServiceConfig(PingService, ping_service_factory),
+        ServiceConfig(APingService, aping_service_factory),
     ],
     cli=cli,
 )
 
-wheke = Wheke()
-wheke.add_pod(demo_pod)
-wheke.add_pod(test_pod)
+
+def make_wheke() -> Wheke:
+    wheke = Wheke()
+    wheke.add_pod(demo_pod)
+    wheke.add_pod(test_pod)
+
+    return wheke

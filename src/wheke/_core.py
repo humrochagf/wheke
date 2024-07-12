@@ -1,4 +1,6 @@
+from collections.abc import Callable
 from importlib import import_module
+from types import TracebackType
 
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
@@ -6,7 +8,12 @@ from typer import Typer
 
 from ._cli import empty_callback, version
 from ._pod import Pod
-from ._service import get_service_registry
+from ._service import (
+    ServiceConfig,
+    aclose_service_registry,
+    close_service_registry,
+    register_service,
+)
 from ._settings import WhekeSettings, get_settings
 
 
@@ -23,20 +30,22 @@ class Wheke:
     ) -> None:
         self.pods = []
 
+        settings_factory: Callable
+
         if settings is None:
             settings_cls = WhekeSettings
-            settings_obj = WhekeSettings()
+            settings_factory = WhekeSettings
         elif isinstance(settings, WhekeSettings):
             settings_cls = type(settings)
-            settings_obj = settings
+            settings_factory = lambda: settings  # NOQA: E731
         else:
             settings_cls = settings
-            settings_obj = settings_cls()
+            settings_factory = settings_cls
 
-        get_service_registry().register_value(settings_cls, settings_obj)
+        register_service(ServiceConfig(settings_cls, settings_factory, True))
 
         if settings_cls != WhekeSettings:
-            get_service_registry().register_value(WhekeSettings, settings_obj)
+            register_service(ServiceConfig(WhekeSettings, settings_factory, True))
 
         for pod in get_settings(WhekeSettings).pods:
             self.add_pod(pod)
@@ -53,8 +62,8 @@ class Wheke:
         else:
             pod = pod_to_add
 
-        for service_type, service_factory in pod.services:
-            get_service_registry().register_factory(service_type, service_factory)
+        for service_config in pod.services:
+            register_service(service_config)
 
         self.pods.append(pod)
 
@@ -90,3 +99,31 @@ class Wheke:
                 cli.add_typer(pod.cli, name=pod.name)
 
         return cli
+
+    def close(self) -> None:
+        close_service_registry()
+
+    async def aclose(self) -> None:
+        await aclose_service_registry()
+
+    def __enter__(self) -> "Wheke":
+        return self
+
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: TracebackType | None,
+    ) -> None:
+        self.close()
+
+    async def __aenter__(self) -> "Wheke":
+        return self
+
+    async def __aexit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: TracebackType | None,
+    ) -> None:
+        await self.aclose()

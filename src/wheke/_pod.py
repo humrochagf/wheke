@@ -1,10 +1,10 @@
-from collections.abc import Callable
+from collections.abc import Iterable
 from pathlib import Path
 
 from fastapi import APIRouter
 from typer import Typer
 
-ServiceList = list[tuple[type, Callable]]
+from ._service import ServiceConfig
 
 
 class Pod:
@@ -27,7 +27,7 @@ class Pod:
     static_path: Path | None
     "The path to the Pod static files."
 
-    services: ServiceList
+    services: Iterable[ServiceConfig]
     """
     The list of services provided by the Pod.
 
@@ -45,7 +45,7 @@ class Pod:
         router: APIRouter | None = None,
         static_url: str | None = None,
         static_path: str | Path | None = None,
-        services: ServiceList | None = None,
+        services: Iterable[ServiceConfig] | None = None,
         cli: Typer | None = None,
     ) -> None:
         self.name = name

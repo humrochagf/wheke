@@ -27,6 +27,7 @@ classifiers = [
   "Topic :: Internet",
 ]
 dependencies = [
+  "anyio",
   "fastapi",
   "pydantic",
   "pydantic-settings",
@@ -53,6 +54,7 @@ dependencies = [
   "pytest",
   "pytest-cov",
   "ruff",
+  "trio",
 ]
 
 [tool.hatch.envs.default.scripts]

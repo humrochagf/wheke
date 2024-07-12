@@ -8,7 +8,7 @@
         - Wheke
         - WhekeSettings
         - Pod
-        - ServiceList
+        - ServiceConfig
         - aget_service
         - get_service
         - get_settings
