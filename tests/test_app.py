@@ -1,7 +1,7 @@
 import pytest
 from fastapi import FastAPI, status
 from fastapi.testclient import TestClient
-from svcs import Registry
+from svcs import Container
 
 from wheke import Pod, Wheke, WhekeSettings, demo_pod, get_settings
 from wheke._demo import DEMO_PAGE
@@ -45,8 +45,8 @@ def test_create_app_with_custom_settings_class() -> None:
 
     wheke = Wheke(CustomSettings)
     with TestClient(wheke.create_app()) as app:
-        registry: Registry = app.app_state["svcs_registry"]
-        assert get_settings(registry, CustomSettings).test_setting == "test"
+        with Container(app.app_state["svcs_registry"]) as container:
+            assert get_settings(container, CustomSettings).test_setting == "test"
 
 
 def test_demo_pod(client: TestClient) -> None:

@@ -1,13 +1,13 @@
 from pathlib import Path
-from typing import ClassVar
+from typing import Annotated, ClassVar
 
-from fastapi import APIRouter
-from svcs import Registry
+from fastapi import APIRouter, Depends
+from svcs import Container
 from svcs.fastapi import DepContainer
 from typer import Typer, echo
 
 from wheke import Pod, ServiceConfig, Wheke, demo_pod
-from wheke._service import get_service
+from wheke._service import aget_service, get_service
 
 STATIC_PATH = Path(__file__).parent / "static"
 
@@ -22,7 +22,7 @@ class DBService:
     }
 
 
-def db_service_factory(_: Registry) -> DBService:
+def db_service_factory(_: Container) -> DBService:
     return DBService()
 
 
@@ -36,8 +36,15 @@ class PingService:
         return self.db.data["ping"]
 
 
-def ping_service_factory(registry: Registry) -> PingService:
-    return PingService(get_service(registry, DBService))
+def ping_service_factory(container: Container) -> PingService:
+    return PingService(get_service(container, DBService))
+
+
+def get_ping_service(container: DepContainer) -> PingService:
+    return get_service(container, PingService)
+
+
+PingInjection = Annotated[PingService, Depends(get_ping_service)]
 
 
 class APingService:
@@ -50,19 +57,24 @@ class APingService:
         return self.db.data["aping"]
 
 
-async def aping_service_factory(registry: Registry) -> APingService:
-    return APingService(get_service(registry, DBService))
+async def aping_service_factory(container: Container) -> APingService:
+    return APingService(get_service(container, DBService))
+
+
+async def get_aping_service(container: DepContainer) -> APingService:
+    return await aget_service(container, APingService)
+
+
+APingInjection = Annotated[APingService, Depends(get_aping_service)]
 
 
 @router.get("/ping")
-def ping(services: DepContainer) -> dict:
-    service = services.get(PingService)
+def ping(service: PingInjection) -> dict:
     return {"value": service.ping()}
 
 
 @router.get("/aping")
-async def aping(services: DepContainer) -> dict:
-    service = await services.aget(APingService)
+async def aping(service: APingInjection) -> dict:
     return {"value": await service.ping()}
 
 

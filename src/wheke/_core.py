@@ -1,10 +1,9 @@
 from collections.abc import AsyncGenerator
-from functools import partial
 from importlib import import_module
 
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from svcs import Registry
+from svcs import Container, Registry
 from svcs.fastapi import lifespan as svcs_lifespan
 from typer import Typer
 
@@ -52,16 +51,19 @@ class Wheke:
         for pod in self.pods:
             for config in pod.services:
                 if config.as_value:
+                    with Container(registry) as container:
+                        service = config.service_factory(container)
+
                     registry.register_value(
                         config.service_type,
-                        config.service_factory(registry),
+                        service,
                         ping=config.health_check,
                         on_registry_close=config.cleanup,
                     )
                 else:
                     registry.register_factory(
                         config.service_type,
-                        partial(config.service_factory, registry),
+                        config.service_factory,
                         ping=config.health_check,
                         on_registry_close=config.cleanup,
                     )
