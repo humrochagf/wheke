@@ -5,9 +5,11 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from svcs import Container, Registry
 from svcs.fastapi import lifespan as svcs_lifespan
-from typer import Typer
+from typer import Context, Typer
 
-from ._cli import empty_callback, version
+from wheke._constants import KEY_REGISTRY
+
+from ._cli import version
 from ._pod import Pod
 from ._settings import WhekeSettings
 
@@ -113,8 +115,15 @@ class Wheke:
         """
         Create a Typer cli with all plugged pods.
         """
+
+        def registry_callback(ctx: Context) -> None:
+            registry = Registry()
+            self._setup_registry(registry)
+
+            ctx.obj = {KEY_REGISTRY: registry}
+
         cli = Typer(no_args_is_help=True)
-        cli.callback()(empty_callback)
+        cli.callback()(registry_callback)
         cli.command("version", help="Show Wheke version")(version)
 
         for pod in self.pods:

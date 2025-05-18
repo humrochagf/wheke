@@ -7,7 +7,3 @@ console = Console()
 
 def version() -> None:
     console.print(__version__, highlight=False)
-
-
-def empty_callback() -> None:
-    pass

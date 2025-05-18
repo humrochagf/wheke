@@ -4,10 +4,19 @@ from typing import Annotated, ClassVar
 from fastapi import APIRouter, Depends
 from svcs import Container
 from svcs.fastapi import DepContainer
-from typer import Typer, echo
+from typer import Context, Typer, echo
 
-from wheke import Pod, ServiceConfig, Wheke, demo_pod
-from wheke._service import aget_service, get_service
+from wheke import (
+    Pod,
+    ServiceConfig,
+    Wheke,
+    WhekeSettings,
+    aget_service,
+    demo_pod,
+    get_service,
+    get_service_from_context,
+    get_settings_from_context,
+)
 
 STATIC_PATH = Path(__file__).parent / "static"
 
@@ -84,8 +93,15 @@ def callback() -> None:
 
 
 @cli.command()
-def hello() -> None:
-    echo("world")
+def ping_cmd(ctx: Context) -> None:
+    service = get_service_from_context(ctx, PingService)
+    echo(service.ping())
+
+
+@cli.command()
+def service_name_cmd(ctx: Context) -> None:
+    settings = get_settings_from_context(ctx, WhekeSettings)
+    echo(settings.project_name)
 
 
 test_pod = Pod(

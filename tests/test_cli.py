@@ -22,8 +22,15 @@ def test_version() -> None:
     assert result.stdout.strip() == __version__
 
 
-def test_hello(cli: Typer) -> None:
-    result = runner.invoke(cli, ["test", "hello"])
+def test_ping_cmd(cli: Typer) -> None:
+    result = runner.invoke(cli, ["test", "ping-cmd"])
 
     assert result.exit_code == 0
-    assert result.stdout.strip() == "world"
+    assert result.stdout.strip() == "pong"
+
+
+def test_service_name_cmd(cli: Typer) -> None:
+    result = runner.invoke(cli, ["test", "service-name-cmd"])
+
+    assert result.exit_code == 0
+    assert result.stdout.strip() == "Wheke"
