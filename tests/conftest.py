@@ -12,15 +12,12 @@ from tests.example_app import make_wheke
 def client() -> Generator[TestClient, Any, Any]:
     wheke = make_wheke()
 
-    yield TestClient(wheke.create_app())
-
-    wheke.close()
+    with TestClient(wheke.create_app()) as app:
+        yield app
 
 
 @pytest.fixture
-def cli() -> Generator[Typer, Any, Any]:
+def cli() -> Typer:
     wheke = make_wheke()
 
-    yield wheke.create_cli()
-
-    wheke.close()
+    return wheke.create_cli()

@@ -9,10 +9,10 @@ runner = CliRunner()
 
 
 def test_create_cli() -> None:
-    with Wheke() as wheke:
-        app = wheke.create_cli()
+    wheke = Wheke()
+    app = wheke.create_cli()
 
-        assert type(app) is Typer
+    assert type(app) is Typer
 
 
 def test_version() -> None:

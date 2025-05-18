@@ -2,6 +2,7 @@ from typing import TypeVar
 
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from svcs import Registry
 
 from ._service import get_service
 
@@ -22,5 +23,5 @@ class WhekeSettings(BaseSettings):
 T = TypeVar("T", bound=WhekeSettings)
 
 
-def get_settings(cls: type[T]) -> T:
-    return get_service(cls)
+def get_settings(registry: Registry, cls: type[T]) -> T:
+    return get_service(registry, cls)

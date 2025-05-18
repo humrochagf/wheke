@@ -1,26 +1,26 @@
-from collections.abc import Callable
+from collections.abc import AsyncGenerator
+from functools import partial
 from importlib import import_module
-from types import TracebackType
 
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
+from svcs import Registry
+from svcs.fastapi import lifespan as svcs_lifespan
 from typer import Typer
 
 from ._cli import empty_callback, version
 from ._pod import Pod
-from ._service import (
-    ServiceConfig,
-    aclose_service_registry,
-    close_service_registry,
-    register_service,
-)
-from ._settings import WhekeSettings, get_settings
+from ._settings import WhekeSettings
 
 
 class Wheke:
     """
     The Wheke class is the entry point to build an application.
     """
+
+    settings_cls: type[WhekeSettings]
+
+    settings: WhekeSettings
 
     pods: list[Pod]
     "The list of pods plugged to Wheke."
@@ -30,25 +30,41 @@ class Wheke:
     ) -> None:
         self.pods = []
 
-        settings_factory: Callable
-
         if settings is None:
-            settings_cls = WhekeSettings
-            settings_factory = WhekeSettings
+            self.settings_cls = WhekeSettings
+            self.settings = WhekeSettings()
         elif isinstance(settings, WhekeSettings):
-            settings_cls = type(settings)
-            settings_factory = lambda: settings  # NOQA: E731
+            self.settings_cls = type(settings)
+            self.settings = settings
         else:
-            settings_cls = settings
-            settings_factory = settings_cls
+            self.settings_cls = settings
+            self.settings = settings()
 
-        register_service(ServiceConfig(settings_cls, settings_factory, True))
-
-        if settings_cls != WhekeSettings:
-            register_service(ServiceConfig(WhekeSettings, settings_factory, True))
-
-        for pod in get_settings(WhekeSettings).pods:
+        for pod in self.settings.pods:
             self.add_pod(pod)
+
+    def _setup_registry(self, registry: Registry) -> None:
+        registry.register_value(self.settings_cls, self.settings)
+
+        if self.settings_cls != WhekeSettings:
+            registry.register_value(WhekeSettings, self.settings)
+
+        for pod in self.pods:
+            for config in pod.services:
+                if config.as_value:
+                    registry.register_value(
+                        config.service_type,
+                        config.service_factory(registry),
+                        ping=config.health_check,
+                        on_registry_close=config.cleanup,
+                    )
+                else:
+                    registry.register_factory(
+                        config.service_type,
+                        partial(config.service_factory, registry),
+                        ping=config.health_check,
+                        on_registry_close=config.cleanup,
+                    )
 
     def add_pod(self, pod_to_add: Pod | str) -> None:
         """
@@ -62,16 +78,21 @@ class Wheke:
         else:
             pod = pod_to_add
 
-        for service_config in pod.services:
-            register_service(service_config)
-
         self.pods.append(pod)
 
     def create_app(self) -> FastAPI:
         """
         Create a FastAPI app with all plugged pods.
         """
-        app = FastAPI(title=get_settings(WhekeSettings).project_name)
+
+        @svcs_lifespan
+        async def lifespan(
+            _: FastAPI, registry: Registry
+        ) -> AsyncGenerator[dict[str, object], None]:
+            self._setup_registry(registry)
+            yield {}
+
+        app = FastAPI(title=self.settings.project_name, lifespan=lifespan)
 
         for pod in self.pods:
             if pod.static_url is not None and pod.static_path is not None:
@@ -99,31 +120,3 @@ class Wheke:
                 cli.add_typer(pod.cli, name=pod.name)
 
         return cli
-
-    def close(self) -> None:
-        close_service_registry()
-
-    async def aclose(self) -> None:
-        await aclose_service_registry()
-
-    def __enter__(self) -> "Wheke":
-        return self
-
-    def __exit__(
-        self,
-        exc_type: type[BaseException] | None,
-        exc_val: BaseException | None,
-        exc_tb: TracebackType | None,
-    ) -> None:
-        self.close()
-
-    async def __aenter__(self) -> "Wheke":
-        return self
-
-    async def __aexit__(
-        self,
-        exc_type: type[BaseException] | None,
-        exc_val: BaseException | None,
-        exc_tb: TracebackType | None,
-    ) -> None:
-        await self.aclose()

@@ -1,6 +1,7 @@
 import pytest
 from fastapi import FastAPI, status
 from fastapi.testclient import TestClient
+from svcs import Registry
 
 from wheke import Pod, Wheke, WhekeSettings, demo_pod, get_settings
 from wheke._demo import DEMO_PAGE
@@ -9,44 +10,43 @@ pytestmark = pytest.mark.anyio
 
 
 async def test_create_app() -> None:
-    async with Wheke() as wheke:
-        app = wheke.create_app()
+    wheke = Wheke()
+    app = wheke.create_app()
 
-        assert type(app) is FastAPI
+    assert type(app) is FastAPI
 
 
 def test_create_app_with_demo_pod_in_settings() -> None:
     settings = WhekeSettings()
     settings.pods = ["wheke.demo_pod"]
 
-    with Wheke(settings) as wheke:
-        app = wheke.create_app()
+    wheke = Wheke(settings)
+    app = wheke.create_app()
 
-        assert type(app) is FastAPI
-        assert demo_pod in wheke.pods
+    assert type(app) is FastAPI
+    assert demo_pod in wheke.pods
 
 
 def test_create_app_with_empty_pod() -> None:
     empty_pod = Pod("empty")
 
-    with Wheke() as wheke:
-        wheke.add_pod(empty_pod)
+    wheke = Wheke()
+    wheke.add_pod(empty_pod)
 
-        app = wheke.create_app()
+    app = wheke.create_app()
 
-        assert type(app) is FastAPI
-        assert wheke.pods == [empty_pod]
+    assert type(app) is FastAPI
+    assert wheke.pods == [empty_pod]
 
 
 def test_create_app_with_custom_settings_class() -> None:
     class CustomSettings(WhekeSettings):
         test_setting: str = "test"
 
-    with Wheke(CustomSettings) as wheke:
-        app = wheke.create_app()
-
-        assert type(app) is FastAPI
-        assert get_settings(CustomSettings).test_setting == "test"
+    wheke = Wheke(CustomSettings)
+    with TestClient(wheke.create_app()) as app:
+        registry: Registry = app.app_state["svcs_registry"]
+        assert get_settings(registry, CustomSettings).test_setting == "test"
 
 
 def test_demo_pod(client: TestClient) -> None:
@@ -74,4 +74,4 @@ def test_aping(client: TestClient) -> None:
     response = client.get("/aping")
 
     assert response.status_code == status.HTTP_200_OK
-    assert response.json() == {"value": "pong"}
+    assert response.json() == {"value": "apong"}
