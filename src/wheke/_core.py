@@ -22,8 +22,10 @@ class Wheke:
     """
 
     settings_cls: type[WhekeSettings]
+    "The loaded settings class."
 
     settings: WhekeSettings
+    "The loaded settings object."
 
     pods: list[Pod]
     "The list of pods plugged to Wheke."
@@ -46,7 +48,10 @@ class Wheke:
         for pod in self.settings.pods:
             self.add_pod(pod)
 
-    def _setup_registry(self, registry: Registry) -> None:
+    def setup_registry(self, registry: Registry) -> None:
+        """
+        Populates the registry with all redistered pods services.
+        """
         registry.register_value(self.settings_cls, self.settings)
 
         if self.settings_cls != WhekeSettings:
@@ -95,7 +100,7 @@ class Wheke:
         async def lifespan(
             _: FastAPI, registry: Registry
         ) -> AsyncGenerator[dict[str, object], None]:
-            self._setup_registry(registry)
+            self.setup_registry(registry)
             yield {}
 
         app = FastAPI(title=self.settings.project_name, lifespan=lifespan)
@@ -120,7 +125,7 @@ class Wheke:
 
         def registry_callback(ctx: Context) -> None:
             registry = Registry()
-            self._setup_registry(registry)
+            self.setup_registry(registry)
 
             ctx.ensure_object(dict)
             ctx.obj[KEY_REGISTRY] = registry
