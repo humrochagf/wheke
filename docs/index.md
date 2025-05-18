@@ -105,7 +105,7 @@ app = wheke.create_app()
 To start the server run:
 
 ```shell
-uvicon main:app --reload
+uvicorn main:app --reload
 ```
 
 Now you can check the app at [http://127.0.0.1:8000](http://127.0.0.1:8000)
