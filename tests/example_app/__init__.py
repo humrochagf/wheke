@@ -13,9 +13,9 @@ from wheke import (
     WhekeSettings,
     aget_service,
     demo_pod,
+    get_container,
     get_service,
-    get_service_from_context,
-    get_settings_from_context,
+    get_settings,
 )
 
 STATIC_PATH = Path(__file__).parent / "static"
@@ -94,13 +94,13 @@ def callback() -> None:
 
 @cli.command()
 def ping_cmd(ctx: Context) -> None:
-    service = get_service_from_context(ctx, PingService)
+    service = get_service(get_container(ctx), PingService)
     echo(service.ping())
 
 
 @cli.command()
 def service_name_cmd(ctx: Context) -> None:
-    settings = get_settings_from_context(ctx, WhekeSettings)
+    settings = get_settings(get_container(ctx), WhekeSettings)
     echo(settings.project_name)
 
 

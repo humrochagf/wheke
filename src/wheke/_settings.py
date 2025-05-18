@@ -3,9 +3,8 @@ from typing import TypeVar
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from svcs import Container
-from typer import Context
 
-from ._service import get_service, get_service_from_context
+from ._service import get_service
 
 
 class WhekeSettings(BaseSettings):
@@ -26,7 +25,3 @@ T = TypeVar("T", bound=WhekeSettings)
 
 def get_settings(container: Container, cls: type[T]) -> T:
     return get_service(container, cls)
-
-
-def get_settings_from_context(ctx: Context, cls: type[T]) -> T:
-    return get_service_from_context(ctx, cls)

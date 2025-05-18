@@ -1,13 +1,15 @@
 from collections.abc import AsyncGenerator
 from importlib import import_module
+from typing import Any
 
+from click import get_current_context
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from svcs import Container, Registry
 from svcs.fastapi import lifespan as svcs_lifespan
 from typer import Context, Typer
 
-from wheke._constants import KEY_REGISTRY
+from wheke._constants import KEY_CONTAINER, KEY_REGISTRY
 
 from ._cli import version
 from ._pod import Pod
@@ -120,10 +122,20 @@ class Wheke:
             registry = Registry()
             self._setup_registry(registry)
 
-            ctx.obj = {KEY_REGISTRY: registry}
+            ctx.ensure_object(dict)
+            ctx.obj[KEY_REGISTRY] = registry
+            ctx.obj[KEY_CONTAINER] = Container(registry)
+
+        def cleanup_callback(_: Any) -> None:
+            ctx = get_current_context()
+            ctx.ensure_object(dict)
+            ctx.obj[KEY_CONTAINER].close()
+            del ctx.obj[KEY_CONTAINER]
+            ctx.obj[KEY_REGISTRY].close()
+            del ctx.obj[KEY_REGISTRY]
 
         cli = Typer(no_args_is_help=True)
-        cli.callback()(registry_callback)
+        cli.callback(result_callback=cleanup_callback)(registry_callback)
         cli.command("version", help="Show Wheke version")(version)
 
         for pod in self.pods:
