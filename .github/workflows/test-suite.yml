@@ -44,12 +44,12 @@ jobs:
 
       - name: Typecheck
         run: |
-          uv --no-sync run mypy .
+          uv run --no-sync mypy .
 
       - name: Lint
         run: |
-          uv --no-sync run ruff check .
+          uv run --no-sync ruff check .
 
       - name: Tests
         run: |
-          uv --no-sync run pytest --cov
+          uv run --no-sync pytest --cov
