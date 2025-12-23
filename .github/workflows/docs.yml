@@ -28,7 +28,9 @@ jobs:
           enable-cache: true
 
       - name: Install the project
-        run: uv sync --group docs
+        run: |
+          uv sync --group docs
+          uv pip install .
 
       - name: Configure Git for GitHub Actions bot
         run: |
@@ -36,7 +38,8 @@ jobs:
           git config --local user.email 'github-actions[bot]@users.noreply.github.com'
 
       - name: Build documentation
-        run: uv run mkdocs build
+        run: |
+          uv run --no-sync mkdocs build
 
       - name: Deploy documentation
         uses: peaceiris/actions-gh-pages@v4

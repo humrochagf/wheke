@@ -53,9 +53,6 @@ docs = [
   "mkdocstrings[python]",
 ]
 
-[tool.pytest.ini_options]
-pythonpath = ["src"]
-
 [tool.isort]
 profile = "black"
 skip = [
