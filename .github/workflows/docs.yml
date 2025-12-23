@@ -30,7 +30,7 @@ jobs:
       - name: Install the project
         run: |
           uv sync --group docs
-          uv pip install .
+          uv pip install -e .
 
       - name: Configure Git for GitHub Actions bot
         run: |

@@ -40,7 +40,7 @@ jobs:
       - name: Install the project
         run: |
           uv sync --dev
-          uv pip install .
+          uv pip install -e .
 
       - name: Typecheck
         run: |
