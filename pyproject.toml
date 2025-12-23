@@ -1,10 +1,6 @@
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
 [project]
 name = "wheke"
-dynamic = ["version"]
+version = "0.4.0"
 description = "A cute framework for small self-hosted apps"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -43,11 +39,8 @@ Documentation = "https://wheke.humberto.io/"
 Issues = "https://github.com/humrochagf/wheke/issues"
 Source = "https://github.com/humrochagf/wheke"
 
-[tool.hatch.version]
-path = "src/wheke/__about__.py"
-
-[tool.hatch.envs.default]
-dependencies = [
+[dependency-groups]
+dev = [
   "httpx",
   "mypy",
   "pytest",
@@ -55,26 +48,10 @@ dependencies = [
   "ruff",
   "trio",
 ]
-
-[tool.hatch.envs.default.scripts]
-cov = "pytest --cov"
-tests = "pytest {args:tests}"
-typing = "mypy --install-types --non-interactive {args:src/wheke tests}"
-lint = "ruff check {args:.}"
-fmt = "ruff format {args:.}"
-
-[tool.hatch.envs.docs]
-dependencies = [
+docs = [
   "mkdocs-material",
   "mkdocstrings[python]",
 ]
-
-[tool.hatch.envs.docs.scripts]
-build = "mkdocs build"
-server = "mkdocs serve"
-
-[[tool.hatch.envs.all.matrix]]
-python = ["3.12", "3.13"]
 
 [tool.isort]
 profile = "black"

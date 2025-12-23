@@ -3,8 +3,7 @@ name: Docs
 on:
   push:
     branches:
-    - main
-  pull_request:
+      - main
 
 env:
   FORCE_COLOR: "1"
@@ -18,39 +17,31 @@ jobs:
       group: ${{ github.workflow }}-${{ github.ref }}
 
     steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.13'
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.13"
+          enable-cache: true
 
-    - name: Ensure latest pip
-      run: |
-        python -m pip install --upgrade pip
+      - name: Install the project
+        run: uv sync --docs
 
-    - name: Install dependencies
-      run: |
-        python -m pip install hatch
-        hatch env create docs
+      - name: Configure Git for GitHub Actions bot
+        run: |
+          git config --local user.name 'github-actions[bot]'
+          git config --local user.email 'github-actions[bot]@users.noreply.github.com'
 
-    - name: Display full version
-      run: hatch version
+      - name: Build documentation
+        run: uv run mkdocs build
 
-    - name: Configure Git for GitHub Actions bot
-      run: |
-        git config --local user.name 'github-actions[bot]'
-        git config --local user.email 'github-actions[bot]@users.noreply.github.com'
-
-    - name: Build documentation
-      run: hatch run docs:build
-
-    - name: Deploy documentation
-      uses: peaceiris/actions-gh-pages@v3
-      if: github.ref == 'refs/heads/main'
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: site
-        cname: wheke.humberto.io
+      - name: Deploy documentation
+        uses: peaceiris/actions-gh-pages@v4
+        if: github.ref == 'refs/heads/main'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: site
+          cname: wheke.humberto.io

@@ -1,10 +1,7 @@
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
-from typing import TypeVar
 
 from svcs import Container
-
-T = TypeVar("T")
 
 
 @dataclass
@@ -16,9 +13,9 @@ class ServiceConfig:
     as_value: bool = False
 
 
-def get_service(container: Container, service_type: type[T]) -> T:
+def get_service[T](container: Container, service_type: type[T]) -> T:
     return container.get(service_type)
 
 
-async def aget_service(container: Container, service_type: type[T]) -> T:
+async def aget_service[T](container: Container, service_type: type[T]) -> T:
     return await container.aget(service_type)
