@@ -28,7 +28,7 @@ jobs:
           enable-cache: true
 
       - name: Install the project
-        run: uv sync --docs
+        run: uv sync --group docs
 
       - name: Configure Git for GitHub Actions bot
         run: |
