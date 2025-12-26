@@ -68,7 +68,6 @@ class Wheke:
                         service,
                         ping=config.health_check,
                         on_registry_close=config.cleanup,
-                        enter=config.enter,
                     )
                 else:
                     registry.register_factory(
@@ -76,7 +75,6 @@ class Wheke:
                         config.service_factory,
                         ping=config.health_check,
                         on_registry_close=config.cleanup,
-                        enter=config.enter,
                     )
 
     def add_pod(self, pod_to_add: Pod | str) -> None:
