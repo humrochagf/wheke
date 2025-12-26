@@ -30,7 +30,6 @@ class FeatureSettings(BaseModel):
     ```.env
     WHEKE_FEATURES='{"my_feature": {"custom_parameter": "custom_value"}}'
     ```
-    ```
     """
 
     __feature_name__: ClassVar[str]
