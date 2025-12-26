@@ -7,6 +7,7 @@ from svcs.fastapi import DepContainer
 from typer import Context, Typer, echo
 
 from wheke import (
+    FeatureSettings,
     Pod,
     ServiceConfig,
     Wheke,
@@ -77,6 +78,19 @@ async def get_aping_service(container: DepContainer) -> APingService:
 APingInjection = Annotated[APingService, Depends(get_aping_service)]
 
 
+class CustomSetting(FeatureSettings):
+    __feature_name__: ClassVar[str] = "custom_feature"
+
+    test: str = "testvalue"
+
+
+def _wheke_settings_injection(container: DepContainer) -> WhekeSettings:
+    return get_settings(container, WhekeSettings)
+
+
+WhekeSettingsInjection = Annotated[WhekeSettings, Depends(_wheke_settings_injection)]
+
+
 @router.get("/ping")
 def ping(service: PingInjection) -> dict:
     return {"value": service.ping()}
@@ -85,6 +99,11 @@ def ping(service: PingInjection) -> dict:
 @router.get("/aping")
 async def aping(service: APingInjection) -> dict:
     return {"value": await service.ping()}
+
+
+@router.get("/custom_settings")
+async def custom_settings(settings: WhekeSettingsInjection) -> dict:
+    return settings.get_feature(CustomSetting).model_dump()
 
 
 @cli.callback()

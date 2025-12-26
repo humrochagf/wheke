@@ -7,6 +7,7 @@
         members:
         - Wheke
         - WhekeSettings
+        - FeatureSettings
         - Pod
         - ServiceConfig
         - aget_service

@@ -75,3 +75,10 @@ def test_aping(client: TestClient) -> None:
 
     assert response.status_code == status.HTTP_200_OK
     assert response.json() == {"value": "apong"}
+
+
+def test_custom_settings(client: TestClient) -> None:
+    response = client.get("/custom_settings")
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json() == {"test": "testvalue"}
