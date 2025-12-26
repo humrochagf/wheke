@@ -492,6 +492,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#wheke.FeatureSettings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FeatureSettings
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="FeatureSettings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#wheke.FeatureSettings.__feature_name__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __feature_name__
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#wheke.Pod" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -776,6 +804,34 @@
       
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wheke.FeatureSettings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FeatureSettings
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="FeatureSettings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#wheke.FeatureSettings.__feature_name__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __feature_name__
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1199,6 +1255,90 @@
 
 
 
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="wheke.FeatureSettings" class="doc doc-heading">
+            <span class="doc doc-object-name doc-class-name">FeatureSettings</span>
+
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
+
+
+
+        <p>Base model to declare custom feature settings.</p>
+<p>When inheriting from this method make sure to override
+the <code>__feature_name__</code> with an unique feature name
+preferentially snake_case lower case (e.g. my_custom_feature).</p>
+<p>The feature name will be used as namespace to the settings values
+defined in the model:</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">CustomSettings</span><span class="p">(</span><span class="n">FeatureSettings</span><span class="p">):</span>
+    <span class="n">__feature_name__</span> <span class="o">==</span> <span class="s2">&quot;my_feature&quot;</span>
+    <span class="n">custom_parameter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;test&quot;</span>
+</code></pre></div>
+<p>Can be set like this in the .env file:</p>
+<div class="highlight"><pre><span></span><code>WHEKE_FEATURES=&#39;{&quot;my_feature&quot;: {&quot;custom_parameter&quot;: &quot;custom_value&quot;}}&#39;
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="wheke.FeatureSettings.__feature_name__" class="doc doc-heading">
+            <span class="doc doc-object-name doc-attribute-name">__feature_name__</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+  </span>
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">__feature_name__</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>The namespace of the feature in the app settings.</p>
+
+    </div>
+
+</div>
 
 
 
