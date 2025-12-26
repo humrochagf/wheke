@@ -11,6 +11,7 @@ class ServiceConfig:
     health_check: Callable | None = None
     cleanup: Callable | Awaitable | None = None
     as_value: bool = False
+    enter: bool = True
 
 
 def get_service[T](container: Container, service_type: type[T]) -> T:
