@@ -70,11 +70,25 @@ def test_ping(client: TestClient) -> None:
     assert response.json() == {"value": "pong"}
 
 
+def test_state(client: TestClient) -> None:
+    response = client.get("/state")
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json() == {"value": "initialized"}
+
+
 def test_aping(client: TestClient) -> None:
     response = client.get("/aping")
 
     assert response.status_code == status.HTTP_200_OK
     assert response.json() == {"value": "apong"}
+
+
+def test_astate(client: TestClient) -> None:
+    response = client.get("/astate")
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json() == {"value": "initialized"}
 
 
 def test_custom_settings(client: TestClient) -> None:

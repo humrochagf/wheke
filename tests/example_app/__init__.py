@@ -36,18 +36,54 @@ def db_service_factory(_: Container) -> DBService:
     return DBService()
 
 
+class StateService:
+    state: str
+
+    def __init__(self) -> None:
+        self.state = "initialized"
+
+    def dispose(self) -> None:
+        self.state = "disposed"
+
+
+def state_service_factory(_: Container) -> StateService:
+    return StateService()
+
+
+class AStateService:
+    state: str
+
+    def __init__(self) -> None:
+        self.state = "initialized"
+
+    async def dispose(self) -> None:
+        self.state = "disposed"
+
+
+def astate_service_factory(_: Container) -> AStateService:
+    return AStateService()
+
+
 class PingService:
     db: DBService
+    state: StateService
 
-    def __init__(self, db: DBService) -> None:
+    def __init__(self, db: DBService, state: StateService) -> None:
         self.db = db
+        self.state = state
 
     def ping(self) -> str:
         return self.db.data["ping"]
 
+    def get_state(self) -> str:
+        return self.state.state
+
 
 def ping_service_factory(container: Container) -> PingService:
-    return PingService(get_service(container, DBService))
+    return PingService(
+        get_service(container, DBService),
+        get_service(container, StateService),
+    )
 
 
 def get_ping_service(container: DepContainer) -> PingService:
@@ -59,16 +95,24 @@ PingInjection = Annotated[PingService, Depends(get_ping_service)]
 
 class APingService:
     db: DBService
+    state: AStateService
 
-    def __init__(self, db: DBService) -> None:
+    def __init__(self, db: DBService, state: AStateService) -> None:
         self.db = db
+        self.state = state
 
     async def ping(self) -> str:
         return self.db.data["aping"]
 
+    async def get_state(self) -> str:
+        return self.state.state
+
 
 async def aping_service_factory(container: Container) -> APingService:
-    return APingService(get_service(container, DBService))
+    return APingService(
+        get_service(container, DBService),
+        get_service(container, AStateService),
+    )
 
 
 async def get_aping_service(container: DepContainer) -> APingService:
@@ -96,9 +140,19 @@ def ping(service: PingInjection) -> dict:
     return {"value": service.ping()}
 
 
+@router.get("/state")
+def state(service: PingInjection) -> dict:
+    return {"value": service.get_state()}
+
+
 @router.get("/aping")
 async def aping(service: APingInjection) -> dict:
     return {"value": await service.ping()}
+
+
+@router.get("/astate")
+async def astate(service: APingInjection) -> dict:
+    return {"value": await service.get_state()}
 
 
 @router.get("/custom_settings")
@@ -129,7 +183,19 @@ test_pod = Pod(
     static_url="/static",
     static_path=str(STATIC_PATH),
     services=[
-        ServiceConfig(DBService, db_service_factory, as_value=True),
+        ServiceConfig(DBService, db_service_factory, is_singleton=True),
+        ServiceConfig(
+            StateService,
+            state_service_factory,
+            is_singleton=True,
+            singleton_cleanup_method="dispose",
+        ),
+        ServiceConfig(
+            AStateService,
+            astate_service_factory,
+            is_singleton=True,
+            singleton_cleanup_method="dispose",
+        ),
         ServiceConfig(PingService, ping_service_factory),
         ServiceConfig(APingService, aping_service_factory),
     ],

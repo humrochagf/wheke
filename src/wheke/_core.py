@@ -59,22 +59,23 @@ class Wheke:
 
         for pod in self.pods:
             for config in pod.services:
-                if config.as_value:
+                if config.is_singleton:
                     with Container(registry) as container:
                         service = config.service_factory(container)
+
+                    on_registry_close = config.get_cleanup_method(service)
 
                     registry.register_value(
                         config.service_type,
                         service,
                         ping=config.health_check,
-                        on_registry_close=config.cleanup,
+                        on_registry_close=on_registry_close,
                     )
                 else:
                     registry.register_factory(
                         config.service_type,
                         config.service_factory,
                         ping=config.health_check,
-                        on_registry_close=config.cleanup,
                     )
 
     def add_pod(self, pod_to_add: Pod | str) -> None:
