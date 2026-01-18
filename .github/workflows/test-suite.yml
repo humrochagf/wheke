@@ -25,31 +25,27 @@ jobs:
           - windows-latest
           - macos-latest
         python-version:
-          - '3.12'
-          - '3.13'
+          - "3.12"
+          - "3.13"
+          - "3.14"
 
     steps:
       - uses: actions/checkout@v6
 
       - name: Setup uv
-        uses: astral-sh/setup-uv@v6
+        uses: astral-sh/setup-uv@v7
         with:
           python-version: ${{ matrix.python-version }}
           enable-cache: true
 
-      - name: Install the project
+      - name: Lint
         run: |
-          uv sync --dev
-          uv pip install -e .
+          uv run ruff check .
 
       - name: Typecheck
         run: |
-          uv run --no-sync mypy .
-
-      - name: Lint
-        run: |
-          uv run --no-sync ruff check .
+          uv run mypy .
 
       - name: Tests
         run: |
-          uv run --no-sync pytest --cov
+          uv run pytest --cov
