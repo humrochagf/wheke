@@ -1,7 +1,9 @@
+import inspect
 from collections.abc import AsyncGenerator
 from importlib import import_module
 from typing import Any
 
+import anyio
 from click import get_current_context
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
@@ -48,7 +50,7 @@ class Wheke:
         for pod in self.settings.pods:
             self.add_pod(pod)
 
-    def setup_registry(self, registry: Registry) -> None:
+    async def setup_registry(self, registry: Registry) -> None:
         """
         Populates the registry with all redistered pods services.
         """
@@ -61,7 +63,10 @@ class Wheke:
             for config in pod.services:
                 if config.is_singleton:
                     with Container(registry) as container:
-                        service = config.service_factory(container)
+                        if inspect.iscoroutinefunction(config.service_factory):
+                            service = await config.service_factory(container)
+                        else:
+                            service = config.service_factory(container)
 
                     on_registry_close = config.get_cleanup_method(service)
 
@@ -101,7 +106,7 @@ class Wheke:
         async def lifespan(
             _: FastAPI, registry: Registry
         ) -> AsyncGenerator[dict[str, object], None]:
-            self.setup_registry(registry)
+            await self.setup_registry(registry)
             yield {}
 
         app = FastAPI(title=self.settings.project_name, lifespan=lifespan)
@@ -126,7 +131,7 @@ class Wheke:
 
         def registry_callback(ctx: Context) -> None:
             registry = Registry()
-            self.setup_registry(registry)
+            anyio.run(self.setup_registry, registry)
 
             ctx.ensure_object(dict)
             ctx.obj[KEY_REGISTRY] = registry
@@ -135,9 +140,9 @@ class Wheke:
         def cleanup_callback(_: Any) -> None:
             ctx = get_current_context()
             ctx.ensure_object(dict)
-            ctx.obj[KEY_CONTAINER].close()
+            anyio.run(ctx.obj[KEY_CONTAINER].aclose)
             del ctx.obj[KEY_CONTAINER]
-            ctx.obj[KEY_REGISTRY].close()
+            anyio.run(ctx.obj[KEY_REGISTRY].aclose)
             del ctx.obj[KEY_REGISTRY]
 
         cli = Typer(no_args_is_help=True)

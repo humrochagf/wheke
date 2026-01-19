@@ -45,7 +45,7 @@ class AStateService:
         self.state = "disposed"
 
 
-def astate_service_factory(_: Container) -> AStateService:
+async def astate_service_factory(_: Container) -> AStateService:
     return AStateService()
 
 
@@ -96,7 +96,7 @@ class APingService:
 async def aping_service_factory(container: Container) -> APingService:
     return APingService(
         get_service(container, DBService),
-        get_service(container, AStateService),
+        await aget_service(container, AStateService),
     )
 
 
