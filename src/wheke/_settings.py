@@ -48,8 +48,10 @@ class WhekeSettings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
+        env_nested_delimiter="__",
         env_prefix="wheke_",
         extra="allow",
+        nested_model_default_partial_update=True,
     )
 
     def get_feature[T: FeatureSettings](self, cls: type[T]) -> T:
