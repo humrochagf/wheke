@@ -10,10 +10,18 @@ from wheke import (
 )
 
 
-class CustomSetting(FeatureSettings):
+class CustomFeatureSettings(FeatureSettings):
     __feature_name__: ClassVar[str] = "custom_feature"
 
-    test: str = "testvalue"
+    test_str: str = "testvalue"
+
+
+class AnotherFeatureSettings(FeatureSettings):
+    __feature_name__: ClassVar[str] = "another_feature"
+
+    test_str: str = "anothervalue"
+
+    test_bool: bool = True
 
 
 def _wheke_settings_injection(container: DepContainer) -> WhekeSettings:

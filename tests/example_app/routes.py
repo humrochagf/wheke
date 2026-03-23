@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 from .services import APingInjection, PingInjection
-from .settings import CustomSetting, WhekeSettingsInjection
+from .settings import CustomFeatureSettings, WhekeSettingsInjection
 
 router = APIRouter()
 
@@ -28,4 +28,4 @@ async def astate(service: APingInjection) -> dict:
 
 @router.get("/custom_settings")
 async def custom_settings(settings: WhekeSettingsInjection) -> dict:
-    return settings.get_feature(CustomSetting).model_dump()
+    return settings.get_feature(CustomFeatureSettings).model_dump()
