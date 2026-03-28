@@ -54,7 +54,7 @@ def test_create_app_with_custom_settings_class() -> None:
 
 
 def test_create_app_with_custom_feature_settings() -> None:
-    key = "WHEKE_FEATURES__ANOTHER_FEATURE__TEST_STR"
+    key = "WHEKE__FEATURES__ANOTHER_FEATURE__TEST_STR"
     os.environ[key] = "expectedvalue"
 
     wheke = Wheke()

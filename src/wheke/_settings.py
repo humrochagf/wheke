@@ -45,17 +45,21 @@ class WhekeSettings(BaseSettings):
 
     features: dict = Field(default_factory=dict)
 
+    feature_defaults: dict[str, dict] = Field(default_factory=dict)
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
         env_nested_delimiter="__",
-        env_prefix="wheke_",
+        env_prefix="wheke__",
         extra="allow",
         nested_model_default_partial_update=True,
     )
 
     def get_feature[T: FeatureSettings](self, cls: type[T]) -> T:
-        return cls(**self.features.get(cls.__feature_name__.lower(), {}))
+        feature_name = cls.__feature_name__.lower()
+        defaults = self.feature_defaults.get(feature_name, {})
+        return cls(**self.features.get(feature_name, defaults))
 
 
 def get_settings[T: WhekeSettings](container: Container, cls: type[T]) -> T:
