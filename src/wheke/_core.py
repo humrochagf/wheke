@@ -4,12 +4,12 @@ from importlib import import_module
 from typing import Any
 
 import anyio
-from click import get_current_context
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from svcs import Container, Registry
 from svcs.fastapi import lifespan as svcs_lifespan
 from typer import Context, Typer
+from typer._click.globals import get_current_context
 
 from wheke._constants import KEY_CONTAINER, KEY_REGISTRY
 
